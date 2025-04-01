@@ -1,5 +1,5 @@
 .dashboard-section {
-  padding: 30px 30px 0 180px;
+  padding: 30px 30px 30px 180px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -8,6 +8,7 @@
 .widgets-container {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   width: 100%;
 }
 .widget {
@@ -117,6 +118,7 @@
 }
 .dashboard-section .reminder-section .shortcuts .reminders-heading svg {
   font-size: 20px;
+  margin-right: 3px;
 }
 .dashboard-section .reminder-section .shortcuts .reminders-heading p {
   font-size: 10px;
@@ -125,6 +127,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.shortcuts {
+  width: 45%;
 }
 .shortcuts .shortcut-body {
   width: 100%;
@@ -163,4 +168,18 @@
 }
 .shortcut-body .transactions-info .transaction-heading h2 {
   font-size: 10px;
+}
+.shortcut-body .transactions-info .transaction-body {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+/* .shortcut-body .transactions-info .transaction-body .description {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+} */
+.shortcut-body .transactions-info .transaction-body .description p {
+  color: red;
+  font-size: 8px;
 }

@@ -5,6 +5,8 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
 import { GiMoneyStack } from "react-icons/gi";
 import { FaLongArrowAltRight } from "react-icons/fa";
+import { AiFillSchedule } from "react-icons/ai";
+import transactions from "@/public/data";
 
 export default function Dashboard() {
   return (
@@ -105,16 +107,71 @@ export default function Dashboard() {
               </div>
               <div className="transaction-body">
                 <div className="description">
-                  <h5>March Electricity Bill</h5>
-                  <p>Utilities</p>
+                  <h5>
+                    March Electricity Bill{" "}
+                    <span>
+                      <p>Utilities</p>
+                    </span>
+                  </h5>
                 </div>
-                <h5>50</h5>
+                <h5>50.00</h5>
+              </div>
+              <div className="transaction-body">
+                <div className="description">
+                  <h5>
+                    March Electricity Bill{" "}
+                    <span>
+                      <p>Utilities</p>
+                    </span>
+                  </h5>
+                </div>
+                <h5>50.00</h5>
+              </div>
+              <div className="transaction-body">
+                <div className="description">
+                  <h5>
+                    March Electricity Bill{" "}
+                    <span>
+                      <p>Utilities</p>
+                    </span>
+                  </h5>
+                </div>
+                <h5>50.00</h5>
               </div>
             </div>
           </div>
         </div>
-        <div className="shortcuts widget"></div>
+        {/* <div className="shortcuts widget">
+          <div className="reminders-heading">
+            <div className="svg-container">
+              <AiFillSchedule />
+              <p>Budgets</p>
+            </div>
+            <button>
+              <FaPlus />
+            </button>
+          </div>
+          <div className="shortcut-body">
+            <div className="transactions-info">
+              <div className="transaction-heading">
+                <h2>Today 11 March</h2>
+              </div>
+              <div className="transaction-body">
+                <div className="description">
+                  <h5>
+                    Electricity Bill{" "}
+                    <span>
+                      <p>Active</p>
+                    </span>
+                  </h5>
+                </div>
+                <h5>50.00</h5>
+              </div>
+            </div>
+          </div>
+        </div> */}
       </div>
+      
     </section>
   );
 }

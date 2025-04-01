@@ -45,11 +45,11 @@ export default function Sidebar() {
         </li>
         <li>
           <Link
-            href="/notifications"
-            className={pathname === "/notifications" ? "active" : ""}
+            href="/reminders"
+            className={pathname === "/reminders" ? "active" : ""}
           >
             <IoIosNotifications />
-            <p>Notifications</p>
+            <p>Reminders</p>
           </Link>
         </li>
         <li>
@@ -64,8 +64,8 @@ export default function Sidebar() {
         <li>
           <button>
             <CiLogout />
+            Logout
           </button>
-          <p>Logout</p>
         </li>
       </ul>
     </div>

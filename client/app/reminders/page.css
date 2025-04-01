@@ -1,0 +1,108 @@
+.reminders-section {
+  padding: 30px 30px 30px 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+.reminders-section h1 {
+  color: rgb(19, 1, 63);
+}
+.search-reminder {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.search-reminder button {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none;
+  background: none;
+  font-size: 10px;
+  cursor: pointer;
+}
+.search-reminder button svg {
+  font-size: 30px;
+  color: rgb(19, 1, 63);
+}
+.search-reminder input[type="text"] {
+  width: 30%;
+  background-color: white;
+  border: 2px solid rgb(19, 1, 63);
+  height: 30px;
+  border-radius: 30px;
+  padding: 3px 0 0 8px;
+  transition: 0.3s ease-in-out;
+  margin-bottom: 30px;
+}
+.search-reminder input[type="text"]::placeholder {
+  color: black;
+}
+.search-reminder input[type="text"]:focus {
+  background: rgb(19, 1, 63);
+  color: white;
+  border: none;
+}
+.search-reminder input[type="text"]:focus::placeholder {
+  color: transparent;
+}
+.search-reminder input[type="date"] {
+  height: 30px;
+  border: 2px solid rgb(19, 1, 63);
+}
+.reminders-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  gap: 30px;
+}
+.reminders-container p.pinned {
+  font-style: italic;
+  align-self: flex-start;
+  margin-bottom: 0;
+}
+.reminders-container .reminder-card {
+  width: 100%;
+  background: rgb(19, 1, 63);
+  max-height: 80px;
+  padding: 15px 10px ;
+  height: 80px;
+  color: white;
+  overflow: hidden;
+}
+.reminder-card p {
+  font-size: 12px;
+}
+.reminder-card .card-header {
+  display: flex;
+  justify-content: space-between;
+}
+.reminder-card .card-footer {
+  display: flex;
+  justify-content: space-between;
+  justify-content: baseline;
+}
+.reminder-card .card-footer h6 {
+  color: red;
+  font-size: 13px;
+}
+.reminder-card .card-footer h6 span {
+  font-size: 10px;
+}
+.card-footer .footer-buttons {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 5px;
+}
+.card-footer .footer-buttons button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.card-footer .footer-buttons button svg {
+  color: red;
+}

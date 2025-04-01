@@ -1,0 +1,125 @@
+.transactions-page {
+  padding: 30px 30px 30px 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+.page-header {
+  text-align: center;
+  color: rgb(19, 1, 63);
+}
+/* .transaction-actions {
+  width: 23%;
+} */
+.add-transaction {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+.add-transaction .add button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: none;
+  background: none;
+  gap: 8px;
+  font-size: 10px;
+  cursor: pointer;
+}
+.add-transaction button svg {
+  color: rgb(19, 1, 63);
+  font-size: 30px;
+}
+.add-transaction .search-transactions input {
+  width: 100%;
+  background-color: white;
+  border: 2px solid rgb(19, 1, 63);
+  height: 30px;
+  border-radius: 30px;
+  padding: 3px 0 0 8px;
+  transition: 0.3s ease-in-out;
+}
+.add-transaction .search-transactions input::placeholder {
+  color: black;
+}
+.add-transaction .search-transactions input:focus {
+  background: rgb(19, 1, 63);
+  color: white;
+  border: none;
+}
+.add-transaction .search-transactions input:focus::placeholder {
+  color: transparent;
+}
+.add-transaction .filter-date input {
+  width: 100%;
+  height: 30px;
+  border: none;
+  padding: 3px;
+  background: rgb(241, 236, 236);
+}
+.add-transaction .filter-type {
+  display: flex;
+  column-gap: 10px;
+}
+.add-transaction .filter-type button {
+  background: rgb(19, 1, 63);
+  height: 30px;
+  color: white;
+  border: none;
+  width: 100px;
+  cursor: pointer;
+  border-radius: 20px;
+}
+.add-transaction .filter-type button:hover {
+  background: white;
+  color: rgb(19, 1, 63);
+  border: 2px solid rgb(19, 1, 63);
+}
+.transactions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.transaction-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 0.5fr 0.5fr;
+  align-items: center;
+  background: #f9f9f9;
+  font-size: 12px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-row.header {
+  font-weight: bold;
+  background: rgb(19, 1, 63);
+  height: 30px;
+  font-size: 12px;
+  color: white;
+}
+
+.transaction-row div {
+  padding: 5px;
+}
+.transaction-row button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.transaction-row button svg {
+  font-size: 20px;
+}
+.income {
+  color: green;
+  font-weight: bold;
+}
+
+.expense {
+  color: red;
+  font-weight: bold;
+}

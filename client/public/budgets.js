@@ -1,0 +1,66 @@
+const budgets = [
+    {
+      name: "Groceries",
+      category: "Food",
+      amount: 200,
+      spent_amount: 50,
+      start_date: "2025-03-01",
+      end_date: "2025-03-31",
+      created_at: "2025-02-25",
+      status: "active",
+    },
+    {
+      name: "Rent",
+      category: "Housing",
+      amount: 800,
+      spent_amount: 800,
+      start_date: "2025-03-01",
+      end_date: "2025-03-31",
+      created_at: "2025-02-26",
+      status: "active",
+    },
+    {
+      name: "Transportation",
+      category: "Transport",
+      amount: 150,
+      spent_amount: 40,
+      start_date: "2025-03-01",
+      end_date: "2025-03-31",
+      created_at: "2025-02-27",
+      status: "active",
+    },
+    {
+      name: "Entertainment",
+      category: "Leisure",
+      amount: 100,
+      spent_amount: 70,
+      start_date: "2025-03-01",
+      end_date: "2025-03-31",
+      created_at: "2025-02-28",
+      status: "active",
+    },
+    {
+      name: "Healthcare",
+      category: "Medical",
+      amount: 250,
+      spent_amount: 100,
+      start_date: "2025-03-01",
+      end_date: "2025-03-31",
+      created_at: "2025-02-28",
+      status: "active",
+    },
+    {
+      name: "Savings",
+      category: "Financial",
+      amount: 500,
+      spent_amount: 0,
+      start_date: "2025-03-01",
+      end_date: "2025-12-31",
+      created_at: "2025-02-25",
+      status: "active",
+    },
+   
+  ];
+  
+  export default budgets;
+  
