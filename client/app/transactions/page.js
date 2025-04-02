@@ -1,10 +1,41 @@
+"use client";
 import "./page.css";
 import { FaPlus } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
-import transactions from "@/public/data";
+import { useState, useEffect } from "react";
+import Loadingsvg from "../components/Loadingsvg";
+
 export default function Transactions() {
-  return (
+  const [transactions, setTransactions] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch("http://localhost:3001/transactions");
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status ${response.status}`);
+        }
+
+        const data = await response.json();
+        setTransactions(data);
+      } catch (error) {
+        console.error("Error fetching transactions", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTransactions();
+  }, []);
+  return loading ? (
+    <Loadingsvg />
+  ) : (
     <section className="transactions-page">
       <div className="page-header">
         <h1>My Transactions</h1>

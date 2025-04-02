@@ -5,6 +5,14 @@
   align-items: flex-start;
   gap: 40px;
 }
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
 .widgets-container {
   display: flex;
   justify-content: space-between;

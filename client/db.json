@@ -1,0 +1,172 @@
+{
+  "users": [
+    { "id": 1, "name": "John Doe", "email": "john@example.com" },
+    { "id": 2, "name": "Jane Doe", "email": "jane@example.com" }
+  ],
+  "transactions": [
+    {
+      "id": 1,
+      "name": "Groceries",
+      "type": "Expense",
+      "amount": 50.0,
+      "date": "2025-03-10"
+    },
+    {
+      "id": 2,
+      "name": "Salary",
+      "type": "Income",
+      "amount": 2500.0,
+      "date": "2025-03-01"
+    },
+    {
+      "id": 3,
+      "name": "Electricity Bill",
+      "type": "Expense",
+      "amount": 80.0,
+      "date": "2025-03-07"
+    },
+    {
+      "id": 4,
+      "name": "Freelance Project",
+      "type": "Income",
+      "amount": 700.0,
+      "date": "2025-03-08"
+    },
+    {
+      "id": 5,
+      "name": "Dining Out",
+      "type": "Expense",
+      "amount": 40.0,
+      "date": "2025-03-09"
+    },
+    {
+      "id": 6,
+      "name": "Gym Membership",
+      "type": "Expense",
+      "amount": 60.0,
+      "date": "2025-03-06"
+    },
+    {
+      "id": 7,
+      "name": "Internet Bill",
+      "type": "Expense",
+      "amount": 45.0,
+      "date": "2025-03-05"
+    },
+    {
+      "id": 8,
+      "name": "Bonus",
+      "type": "Income",
+      "amount": 1200.0,
+      "date": "2025-03-03"
+    },
+    {
+      "id": 9,
+      "name": "Online Shopping",
+      "type": "Expense",
+      "amount": 120.0,
+      "date": "2025-03-04"
+    },
+    {
+      "id": 10,
+      "name": "Car Maintenance",
+      "type": "Expense",
+      "amount": 250.0,
+      "date": "2025-03-02"
+    },
+    {
+      "id": 11,
+      "name": "Stock Investment",
+      "type": "Income",
+      "amount": 300.0,
+      "date": "2025-03-10"
+    },
+    {
+      "id": 12,
+      "name": "Stock Investment",
+      "type": "Expense",
+      "amount": 300.0,
+      "date": "2025-04-1"
+    }
+  ],
+  "reminders": [
+    {
+      "id": 1,
+      "name": "Doctor's Appointment",
+      "date": "2025-03-15",
+      "time": "10:00 AM"
+    },
+    {
+      "id": 2,
+      "name": "Team Meeting",
+      "date": "2025-03-12",
+      "time": "02:30 PM"
+    },
+    {
+      "id": 3,
+      "name": "Gym Workout",
+      "date": "2025-03-13",
+      "time": "06:00 AM"
+    },
+    {
+      "id": 4,
+      "name": "Project Deadline",
+      "date": "2025-03-18",
+      "time": "11:59 PM"
+    },
+    {
+      "id": 5,
+      "name": "Friend's Birthday",
+      "date": "2025-03-20",
+      "time": "All Day"
+    },
+    {
+      "id": 6,
+      "name": "Grocery Shopping",
+      "date": "2025-03-11",
+      "time": "05:00 PM"
+    },
+    {
+      "id": 7,
+      "name": "Car Service",
+      "date": "2025-03-14",
+      "time": "09:00 AM"
+    },
+    {
+      "id": 8,
+      "name": "Dentist Checkup",
+      "date": "2025-03-16",
+      "time": "03:00 PM"
+    },
+    {
+      "id": 9,
+      "name": "Online Course",
+      "date": "2025-03-17",
+      "time": "07:00 PM"
+    },
+    {
+      "id": 10,
+      "name": "Weekend Trip",
+      "date": "2025-03-22",
+      "time": "All Day"
+    },
+    {
+      "id": 11,
+      "name": "Grocery Shopping",
+      "date": "2025-04-2",
+      "time": "05:00 PM"
+    },
+    {
+      "id": 12,
+      "name": "Grocery Shopping",
+      "date": "2025-04-2",
+      "time": "06:00 PM"
+    },
+    {
+      "id": 13,
+      "name": "Grocery Shopping",
+      "date": "2025-04-2",
+      "time": "07:00 PM"
+    }
+  ]
+}
