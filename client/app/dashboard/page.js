@@ -27,7 +27,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        setLoading(true);
+        setLoading(true)
         setError(null);
 
         const response = await fetch("http://localhost:3001/transactions");

@@ -5,6 +5,22 @@
   align-items: center;
   gap: 40px;
 }
+.no-results {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+.no-results img {
+  height: 15%;
+  width: 10%;
+}
+.no-results p {
+  font-size: 13px;
+}
 .page-header {
   text-align: center;
   color: rgb(19, 1, 63);
@@ -43,6 +59,7 @@
 }
 .add-transaction .search-transactions input::placeholder {
   color: black;
+  font-size: 10px;
 }
 .add-transaction .search-transactions input:focus {
   background: rgb(19, 1, 63);

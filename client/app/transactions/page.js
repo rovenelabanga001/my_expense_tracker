@@ -5,11 +5,15 @@ import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import { useState, useEffect } from "react";
 import Loadingsvg from "../components/Loadingsvg";
+import Noresults from "../components/Noresults";
 
 export default function Transactions() {
+  const magnifySvg = "assets/magnify.svg";
+
   const [transactions, setTransactions] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -27,19 +31,34 @@ export default function Transactions() {
         setTransactions(data);
       } catch (error) {
         console.error("Error fetching transactions", error);
+        setError("Failed to load transactions. Please try again later");
       } finally {
         setLoading(false);
       }
     };
     fetchTransactions();
   }, []);
+
+  const filteredTransactions = transactions.filter(
+    (t) =>
+      t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.amount.toString().includes(searchQuery)
+  );
   return loading ? (
     <Loadingsvg />
   ) : (
     <section className="transactions-page">
       <div className="page-header">
         <h1>My Transactions</h1>
-        <h5>Today 11 March</h5>
+        <h5>
+          Today,{" "}
+          {new Date().toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          })}
+        </h5>
       </div>
       <div className="add-transaction">
         <div className="add">
@@ -49,7 +68,12 @@ export default function Transactions() {
           </button>
         </div>
         <div className="search-transactions">
-          <input type="text" placeholder="search for transactions" />
+          <input
+            type="text"
+            placeholder="search by name, type, amount"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
         <div className="filter-date">
           <input type="date" />
@@ -67,26 +91,30 @@ export default function Transactions() {
           <div>Amount</div>
           <div>Date</div>
         </div>
-        {transactions.map((tx, index) => (
-          <div className="transaction-row" key={index}>
-            <div>{tx.name}</div>
-            <div className={tx.type === "Income" ? "income" : "expense"}>
-              {tx.type}
+        {filteredTransactions.length > 0 ? (
+          filteredTransactions.map((tx, index) => (
+            <div className="transaction-row" key={index}>
+              <div>{tx.name}</div>
+              <div className={tx.type === "Income" ? "income" : "expense"}>
+                {tx.type}
+              </div>
+              <div>{tx.amount}</div>
+              <div>{tx.date}</div>
+              <div>
+                <button>
+                  <MdEdit />
+                </button>
+              </div>
+              <div>
+                <button>
+                  <MdDelete />
+                </button>
+              </div>
             </div>
-            <div>{tx.amount}</div>
-            <div>{tx.date}</div>
-            <div>
-              <button>
-                <MdEdit />
-              </button>
-            </div>
-            <div>
-              <button>
-                <MdDelete />
-              </button>
-            </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <Noresults />
+        )}
       </div>
     </section>
   );
