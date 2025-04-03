@@ -88,8 +88,14 @@
   width: 100px;
   cursor: pointer;
   border-radius: 20px;
+  transition: 0.3s ease-in;
 }
 .add-transaction .filter-type button:hover {
+  background: white;
+  color: rgb(19, 1, 63);
+  border: 2px solid rgb(19, 1, 63);
+}
+.add-transaction .filter-type button.active {
   background: white;
   color: rgb(19, 1, 63);
   border: 2px solid rgb(19, 1, 63);

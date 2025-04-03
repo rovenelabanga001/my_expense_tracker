@@ -9,11 +9,14 @@ import Noresults from "../components/Noresults";
 
 export default function Transactions() {
   const magnifySvg = "assets/magnify.svg";
+  const today = new Date().toISOString().split("T")[0];
 
   const [transactions, setTransactions] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedType, setSelectedType] = useState("All");
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -39,12 +42,23 @@ export default function Transactions() {
     fetchTransactions();
   }, []);
 
-  const filteredTransactions = transactions.filter(
-    (t) =>
+  //handle type filtering
+  const handleTypeChange = (type) => {
+    setSelectedType(type);
+  };
+
+  const filteredTransactions = transactions.filter((t) => {
+    const matchesSearch =
       t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       t.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.amount.toString().includes(searchQuery)
-  );
+      t.amount.includes(searchQuery);
+
+    const matchesType =
+      selectedType === "All" ||
+      t.type.toLowerCase() === selectedType.toLowerCase();
+    const matchesDate = selectedDate ? t.date === selectedDate : true;
+    return matchesSearch && matchesDate && matchesType;
+  });
   return loading ? (
     <Loadingsvg />
   ) : (
@@ -76,12 +90,22 @@ export default function Transactions() {
           />
         </div>
         <div className="filter-date">
-          <input type="date" />
+          <input
+            type="date"
+            max={today}
+            onChange={(e) => setSelectedDate(e.target.value)}
+          />
         </div>
         <div className="filter-type">
-          <button>All</button>
-          <button>Income</button>
-          <button>Expense</button>
+          {["All", "Income", "Expense"].map((type) => (
+            <button
+              key={type}
+              className={selectedType === type ? "active" : ""}
+              onClick={() => handleTypeChange(type)}
+            >
+              {type}
+            </button>
+          ))}
         </div>
       </div>
       <div className="transactions-container">

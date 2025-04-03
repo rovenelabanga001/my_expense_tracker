@@ -1,0 +1,161 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+/* section{
+    width: 100%;
+    overflow: hidden;
+} */
+nav {
+  display: flex;
+  width: 100%;
+  height: 100px;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 10px;
+  background: rgb(255, 255, 255);
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+}
+nav .nav-links ul {
+  display: flex;
+  column-gap: 30px;
+  list-style: none;
+  justify-content: center;
+  align-items: center;
+}
+nav .nav-links ul li {
+  color: rgb(19, 1, 63);
+  cursor: pointer;
+}
+nav .nav-buttons {
+  display: flex;
+  column-gap: 20px;
+  justify-content: center;
+}
+button.log-btn {
+  width: 150px;
+  height: 50px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  background-color: rgb(19, 1, 63);
+  color: white;
+  transition: 0.3s ease-in-out;
+}
+button.log-btn:hover {
+  background: white;
+  color: rgb(19, 1, 63);
+  border: rgb(19, 1, 63) solid;
+}
+.body {
+  padding: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 80px;
+}
+.heading {
+  font-size: 3.5vh;
+  color: rgb(240, 43, 240);
+  font-weight: 300;
+}
+.div-padding {
+  padding: 80px 50px 30px;
+  width: 100%;
+}
+.div-paragraph {
+  line-height: 25px;
+  font-weight: 300;
+}
+.introduction {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.introduction h2 {
+  font-size: 10vh;
+  font-weight: 700;
+}
+.introduction button#intro-signup {
+  background: rgb(240, 43, 240);
+}
+.introduction button#intro-signup:hover {
+  color: rgb(240, 43, 240);
+  background: none;
+  border: rgb(240, 43, 240) solid;
+}
+.features {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 50px;
+}
+
+.features .features-body {
+  display: flex;
+  justify-content: center;
+  column-gap: 50px;
+}
+.features-body .app-feature {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.features-body .feature-icon svg {
+  font-size: 50px;
+  color: white;
+  background: rgb(19, 1, 63);
+  border-radius: 50%;
+  padding: 10px;
+}
+.features-body .feature-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.contact-us {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  background: rgb(19, 1, 63);
+}
+.contact-us form {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 25px;
+}
+.contact-us form input {
+  width: 80%;
+  height: 40px;
+  padding: 0 10px;
+  border: rgb(19, 1, 63) 2px solid;
+}
+.contact-us form input#description {
+  height: 80px;
+}
+.contact-us form input:focus {
+  border: none;
+}
+.contact-us form button {
+  width: 20%;
+  height: 40px;
+  padding: 10px;
+  cursor: pointer;
+}
