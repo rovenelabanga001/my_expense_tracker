@@ -25,9 +25,14 @@ nav .nav-links ul {
   justify-content: center;
   align-items: center;
 }
-nav .nav-links ul li {
+nav .nav-links ul a {
   color: rgb(19, 1, 63);
   cursor: pointer;
+  font-size: 15px;
+  transition: color 0.3s;
+}
+nav .nav-links ul a.active{
+    color: rgb(240, 43, 240);
 }
 nav .nav-buttons {
   display: flex;
@@ -131,7 +136,7 @@ button.log-btn:hover {
   justify-content: center;
   align-items: center;
   gap: 30px;
-  background: rgb(19, 1, 63);
+  background: rgb(238, 237, 239);
 }
 .contact-us form {
   width: 70%;
@@ -141,21 +146,40 @@ button.log-btn:hover {
   align-items: center;
   row-gap: 25px;
 }
-.contact-us form input {
+.contact-us form input,
+textarea {
   width: 80%;
   height: 40px;
   padding: 0 10px;
-  border: rgb(19, 1, 63) 2px solid;
-}
-.contact-us form input#description {
-  height: 80px;
-}
-.contact-us form input:focus {
   border: none;
+  border-bottom: 2px solid rgb(19, 1, 63);
+  transition: 0.3s ease-in-out;
+}
+.contact-us form textarea#description {
+  height: 120px;
+}
+.contact-us form input:focus,
+.contact-us form textarea:focus {
+  outline: none;
+  border-bottom: 2px solid rgb(240, 43, 240);
 }
 .contact-us form button {
   width: 20%;
   height: 40px;
   padding: 10px;
-  cursor: pointer;
+}
+.sent-popup {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sent-popup.error {
+  background-color: #f8d7da;
+  color: #721c24;
 }
