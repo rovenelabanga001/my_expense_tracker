@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import { TiTick } from "react-icons/ti";
 import features from "@/public/features";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [message, setMessage] = useState("");
@@ -11,9 +12,18 @@ export default function Home() {
   const [showError, setShowError] = useState(false);
   const [activeLink, setActiveLink] = useState("");
 
+  const router = useRouter();
+
   const maxWords = 150;
   const form = useRef();
 
+  //function for navigating to routes on a new tab
+  const openInNewTab = (path) =>{
+    const url = `${window.location.origin}${path}`;
+    window.open(url, "_blank")
+  }
+
+  //handles navbar effects on scroll
   useEffect(() => {
     const handleScroll = () => {
       const sections = ["introduction", "features", "contact-us"];
@@ -43,6 +53,7 @@ export default function Home() {
       behavior: "smooth",
     });
   };
+
   const handleMessageChange = (e) => {
     const words = e.target.value.trim().split(/\s+/);
     if (words.length <= maxWords || e.target.value.endsWith(" ")) {
@@ -114,8 +125,8 @@ export default function Home() {
             </ul>
           </div>
           <div className="nav-buttons">
-            <button className="log-btn">Login</button>
-            <button className="log-btn">Sign Up</button>
+            <button className="log-btn" onClick={() => openInNewTab("/signin")}>Sign In</button>
+            <button className="log-btn" onClick={() => openInNewTab("/signup")}>Sign Up</button>
           </div>
         </nav>
       </header>

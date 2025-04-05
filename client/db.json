@@ -1,8 +1,4 @@
 {
-  "users": [
-    { "id": 1, "name": "John Doe", "email": "john@example.com" },
-    { "id": 2, "name": "Jane Doe", "email": "jane@example.com" }
-  ],
   "transactions": [
     {
       "id": 1,
@@ -167,6 +163,22 @@
       "name": "Grocery Shopping",
       "date": "2025-04-2",
       "time": "07:00 PM"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "firstname": "John",
+      "lastname": "Doe",
+      "email": "john@example.com",
+      "password": "123456"
+    },
+    {
+      "id": 2,
+      "firstname": "Jane",
+      "lastname": "Doe",
+      "email": "jane@example.com",
+      "password": "123Jane"
     }
   ]
 }
