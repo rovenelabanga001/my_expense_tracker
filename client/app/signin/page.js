@@ -3,18 +3,22 @@ import "./page.css";
 import { FaInstagram } from "react-icons/fa";
 import { FaLinkedinIn } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { FaSpinner } from "react-icons/fa";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
 import Link from "next/link";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const result = await signIn("credentials", {
       redirect: false,
       email,
@@ -22,10 +26,17 @@ export default function Login() {
     });
 
     if (result.ok) {
-      router.push("/dashboard");
+      toast.success("Signin successfull", {
+        position: "top-center",
+        onClose: () => router.push("/dashboard"),
+        autoClose: 3000,
+      });
     } else {
-      alert("Wrong username or password");
+      toast.error("Wrong username or password, please try again", {
+        position: "top-center",
+      });
     }
+    setLoading(false);
   };
   return (
     <section className="login-page">
@@ -77,17 +88,26 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">Sign In</button>
+          <button type="submit" disabled={loading} className="signup-btn">
+            {loading ? (
+              <span className="flex items-center gap-2">
+                <FaSpinner className="animate-spin" /> Loading...
+              </span>
+            ) : (
+              "Sign Up"
+            )}
+          </button>
         </form>
         <p className="link-section">
           Don't have an account?{" "}
           <span>
             <Link href="/signup" className="text-blue-500 hover:underline">
-              Sign Up
+              Sign In
             </Link>
           </span>
         </p>
       </div>
+      <ToastContainer />
     </section>
   );
 }
