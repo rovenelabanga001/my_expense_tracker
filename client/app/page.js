@@ -18,10 +18,10 @@ export default function Home() {
   const form = useRef();
 
   //function for navigating to routes on a new tab
-  const openInNewTab = (path) =>{
+  const openInNewTab = (path) => {
     const url = `${window.location.origin}${path}`;
-    window.open(url, "_blank")
-  }
+    window.open(url, "_blank");
+  };
 
   //handles navbar effects on scroll
   useEffect(() => {
@@ -125,8 +125,12 @@ export default function Home() {
             </ul>
           </div>
           <div className="nav-buttons">
-            <button className="log-btn" onClick={() => openInNewTab("/signin")}>Sign In</button>
-            <button className="log-btn" onClick={() => openInNewTab("/signup")}>Sign Up</button>
+            <button className="log-btn" onClick={() => openInNewTab("/signin")}>
+              Sign In
+            </button>
+            <button className="log-btn" onClick={() => openInNewTab("/signup")}>
+              Sign Up
+            </button>
           </div>
         </nav>
       </header>
@@ -144,7 +148,9 @@ export default function Home() {
             <br />
             Stay organized and in control effortlessly
           </p>
-          <button className="log-btn">Sign Up</button>
+          <button className="log-btn" onClick={() => openInNewTab("/signup")}>
+            Sign Up
+          </button>
         </div>
         <div className="features div-padding" id="features">
           <div className="features-header ">

@@ -1,4 +1,4 @@
-section.login-page {
+section.signup-page {
   display: flex;
   width: 100%;
   height: 100vh;
@@ -22,40 +22,40 @@ section.login-page {
 .welcome .media-icons a svg {
   color: white;
 }
-.login-form-container {
+.signup-form-container {
   width: 70%;
   height: 100%;
   padding: 50px 100px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
+  gap: 10px;
   text-align: center;
 }
-.login-form-container h2 {
+.signup-form-container h2 {
   color: rgb(19, 1, 63);
 }
-.login-form-container form {
+.signup-form-container form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 30px;
+  gap: 15px;
   width: 100%;
 }
-.login-form-container form input {
+.signup-form-container form input {
   width: 80%;
   height: 40px;
   padding: 0 10px;
   border: 2px solid rgb(19, 1, 63);
   transition: 0.3s ease-in-out;
 }
-.login-form-container form input:focus {
+.signup-form-container form input:focus {
   outline: none;
   border: none;
   border-bottom: 2px solid rgb(19, 1, 63);
 }
-.login-form-container form button {
+.signup-form-container form button {
   width: 30%;
   height: 40px;
   cursor: pointer;
@@ -64,12 +64,12 @@ section.login-page {
   color: white;
   transition: 0.3s ease-in-out;
 }
-.login-form-container form button:hover {
+.signup-form-container form button:hover {
   background: none;
   color: rgb(19, 1, 63);
   border: 2px solid rgb(19, 1, 63);
 }
-.login-form-container p.link-section a {
+.signup-form-container p.link-section a {
   color: blue;
   text-decoration: underline;
   cursor: pointer;
