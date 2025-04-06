@@ -6,6 +6,8 @@ import { MdEdit } from "react-icons/md";
 import { useState, useEffect } from "react";
 import Loadingsvg from "../components/Loadingsvg";
 import Noresults from "../components/Noresults";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function Transactions() {
   const magnifySvg = "assets/magnify.svg";
@@ -17,6 +19,16 @@ export default function Transactions() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedType, setSelectedType] = useState("All");
+
+  const router = useRouter();
+  const { data: session, status } = useSession();
+
+  //protect route
+  useEffect(() => {
+    if (status === "unauthenticated" && !session) {
+      router.push("/signin");
+    }
+  }, [status, session]);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -51,7 +63,7 @@ export default function Transactions() {
     const matchesSearch =
       t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       t.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.amount.includes(searchQuery);
+      t.amount.toString().includes(searchQuery);
 
     const matchesType =
       selectedType === "All" ||

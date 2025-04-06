@@ -25,11 +25,6 @@ export default function Dashboard() {
 
   const { data: session, status } = useSession();
 
-  useEffect(() => {
-    console.log("Session data: ", session); // Log the session data
-    console.log("name: ", session?.user?.name);
-  }, [session]);
-
   //protect route
   useEffect(() => {
     if (status === "unauthenticated" && !session) {
