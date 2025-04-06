@@ -9,10 +9,10 @@ import { AiFillSchedule } from "react-icons/ai";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Loadingsvg from "../components/Loadingsvg";
+import { useSession } from "next-auth/react";
 
 export default function Dashboard() {
   const router = useRouter();
-  const loadingSvg = "assets/loading.svg";
 
   const [transactions, setTransactions] = useState([]);
   const [reminders, setReminders] = useState([]);
@@ -23,11 +23,25 @@ export default function Dashboard() {
   const [transactionDate, setTransactionDate] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
 
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    console.log("Session data: ", session); // Log the session data
+    console.log("name: ", session?.user?.name);
+  }, [session]);
+
+  //protect route
+  useEffect(() => {
+    if (status === "unauthenticated" && !session) {
+      router.push("/signin");
+    }
+  }, [status, session]);
+
   //fetch transactions
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        setLoading(true)
+        setLoading(true);
         setError(null);
 
         const response = await fetch("http://localhost:3001/transactions");
@@ -73,7 +87,7 @@ export default function Dashboard() {
 
         //Filter reminders for today, tomorrow and the day after tomorrow
         const upcomingReminders = data.filter((reminder) => {
-          nextThreeDays.includes(reminder.date);
+          return nextThreeDays.includes(reminder.date);
         });
 
         //If there are no reminders for today, tomorrow or the day after tomorrow, get the three closest reminders
@@ -172,7 +186,9 @@ export default function Dashboard() {
         <div className="user-info-icon">
           <FaRegUserCircle />
         </div>
-        <h3>John Doe</h3>
+        <h3>
+          Hello, {session?.user?.firstname} {session?.user?.lastname}
+        </h3>
       </div>
       <div className="transactions-summary widgets-container">
         <div className="type-summary widget">
