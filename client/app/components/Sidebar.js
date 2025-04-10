@@ -23,7 +23,7 @@ export default function Sidebar() {
             <button
               onClick={() => {
                 toast.dismiss(t.id);
-                signOut();
+                signOut({ callbackUrl: "/signin" });
               }}
               style={{
                 backgroundColor: "rgb(19, 1, 63)",

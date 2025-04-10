@@ -94,7 +94,7 @@ export default function Login() {
                 <FaSpinner className="animate-spin" /> Loading...
               </span>
             ) : (
-              "Sign Up"
+              "Sign In"
             )}
           </button>
         </form>
@@ -102,7 +102,7 @@ export default function Login() {
           Don't have an account?{" "}
           <span>
             <Link href="/signup" className="text-blue-500 hover:underline">
-              Sign In
+              Sign Up
             </Link>
           </span>
         </p>

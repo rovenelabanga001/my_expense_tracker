@@ -8,6 +8,9 @@ import Loadingsvg from "../components/Loadingsvg";
 import Noresults from "../components/Noresults";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Modal from "../components/Modal";
+import AddTransactionForm from "../components/AddTransactionForm";
+import toast from "react-hot-toast";
 
 export default function Transactions() {
   const magnifySvg = "assets/magnify.svg";
@@ -71,6 +74,36 @@ export default function Transactions() {
     const matchesDate = selectedDate ? t.date === selectedDate : true;
     return matchesSearch && matchesDate && matchesType;
   });
+
+  //add transaction function
+  const handleAddTransaction = (newTransaction) => {
+    setTransactions((prevTransactions) => [
+      ...prevTransactions,
+      newTransaction,
+    ]);
+  }
+    
+
+    //DELETE reequest handling
+    const handleDelete = async (id) => {
+      try {
+        const res = await fetch(`http://localhost:3001/transactions/${id}`, {
+          method: "DELETE",
+        });
+
+        if (!res.ok) throw new Error("Failed to delete transaction");
+
+        setTransactions((prevTransactions) =>
+          prevTransactions.filter((transaction) => transaction.id !== id)
+        );
+        toast.success("Transaction deleted successfully");
+      } catch (error) {
+        console.error(error.message);
+        toast.error("Failed! Please try again");
+      }
+    };
+
+   
   return loading ? (
     <Loadingsvg />
   ) : (
@@ -88,10 +121,21 @@ export default function Transactions() {
       </div>
       <div className="add-transaction">
         <div className="add">
-          <button>
-            <FaPlus />
-            Add New
-          </button>
+          <Modal
+            trigger={
+              <button>
+                <FaPlus />
+                Add New
+              </button>
+            }
+          >
+            {({ close }) => (
+              <AddTransactionForm
+                onClose={close}
+                onAddTransaction={handleAddTransaction}
+              />
+            )}
+          </Modal>
         </div>
         <div className="search-transactions">
           <input
@@ -137,12 +181,14 @@ export default function Transactions() {
               <div>{tx.amount}</div>
               <div>{tx.date}</div>
               <div>
-                <button>
+                <Modal trigger={<button>
                   <MdEdit />
-                </button>
+                </button>} >
+
+                </Modal>
               </div>
               <div>
-                <button>
+                <button onClick={() => handleDelete(tx.id)}>
                   <MdDelete />
                 </button>
               </div>

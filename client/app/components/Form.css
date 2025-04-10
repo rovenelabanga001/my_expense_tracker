@@ -1,0 +1,36 @@
+form.add-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+form.add-form h3 {
+  color: rgb(19, 1, 63);
+}
+form.add-form input {
+  width: 80%;
+}
+form.add-form select {
+  width: 85%;
+}
+form.add-form input,
+form.add-form select {
+  height: 30px;
+  border: 2px solid rgb(19, 1, 63);
+  padding: 0 8px;
+}
+form.add-form button.add-btn {
+  width: 30%;
+  background: rgb(19, 1, 63);
+  color: white;
+  padding: 10px;
+  border: none;
+  transition: 0.3s ease-in-out;
+}
+form.add-form button.add-btn:hover {
+  background: white;
+  color: rgb(19, 1, 63);
+  border: 2px solid rgb(19, 1, 63);
+}
