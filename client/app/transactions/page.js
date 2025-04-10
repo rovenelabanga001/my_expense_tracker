@@ -11,6 +11,7 @@ import { useSession } from "next-auth/react";
 import Modal from "../components/Modal";
 import AddTransactionForm from "../components/AddTransactionForm";
 import toast from "react-hot-toast";
+import EditTransactionForm from "../components/EditTransactionForm";
 
 export default function Transactions() {
   const magnifySvg = "assets/magnify.svg";
@@ -81,29 +82,34 @@ export default function Transactions() {
       ...prevTransactions,
       newTransaction,
     ]);
-  }
-    
+  };
 
-    //DELETE reequest handling
-    const handleDelete = async (id) => {
-      try {
-        const res = await fetch(`http://localhost:3001/transactions/${id}`, {
-          method: "DELETE",
-        });
+  //update transaction function
+  const handleUpdate = (updatedTransction) => {
+    setTransactions((prev) =>
+      prev.map((t) => (t.id === updatedTransction.id ? updatedTransction : t))
+    );
+  };
 
-        if (!res.ok) throw new Error("Failed to delete transaction");
+  //DELETE reequest handling
+  const handleDelete = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:3001/transactions/${id}`, {
+        method: "DELETE",
+      });
 
-        setTransactions((prevTransactions) =>
-          prevTransactions.filter((transaction) => transaction.id !== id)
-        );
-        toast.success("Transaction deleted successfully");
-      } catch (error) {
-        console.error(error.message);
-        toast.error("Failed! Please try again");
-      }
-    };
+      if (!res.ok) throw new Error("Failed to delete transaction");
 
-   
+      setTransactions((prevTransactions) =>
+        prevTransactions.filter((transaction) => transaction.id !== id)
+      );
+      toast.success("Transaction deleted successfully");
+    } catch (error) {
+      console.error(error.message);
+      toast.error("Failed! Please try again");
+    }
+  };
+
   return loading ? (
     <Loadingsvg />
   ) : (
@@ -181,10 +187,20 @@ export default function Transactions() {
               <div>{tx.amount}</div>
               <div>{tx.date}</div>
               <div>
-                <Modal trigger={<button>
-                  <MdEdit />
-                </button>} >
-
+                <Modal
+                  trigger={
+                    <button>
+                      <MdEdit />
+                    </button>
+                  }
+                >
+                  {({ close }) => (
+                    <EditTransactionForm
+                      onClose={close}
+                      transaction={tx}
+                      onUpdate={handleUpdate}
+                    />
+                  )}
                 </Modal>
               </div>
               <div>

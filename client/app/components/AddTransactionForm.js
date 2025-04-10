@@ -82,7 +82,7 @@ export default function AddTransactionForm({ onClose, onAddTransaction }) {
         required
       />
       <button type="submit" className="add-btn">
-        Add
+        Add 
       </button>
     </form>
   );
