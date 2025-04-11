@@ -1,0 +1,51 @@
+form.budget-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+}
+form.budget-form div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  justify-content: center;
+  align-items: center;
+}
+form.budget-form h3 {
+  color: rgb(19, 1, 63);
+}
+form.budget-form input {
+  width: 80%;
+}
+form.budget-form select {
+  width: 85%;
+}
+form.budget-form input,
+form.budget-form select {
+  height: 30px;
+  border: 2px solid rgb(19, 1, 63);
+  border-radius: 0;
+  padding: 0 8px;
+}
+.date-label {
+  font-size: 0.9rem;
+  color: #888;
+  margin-top: 1rem;
+  display: block;
+}
+form.budget-form button {
+  width: 30%;
+  background: rgb(19, 1, 63);
+  color: white;
+  padding: 10px;
+  border: none;
+  transition: 0.3s ease-in-out;
+}
+form.budget-form button:hover {
+  background: white;
+  color: rgb(19, 1, 63);
+  border: 2px solid rgb(19, 1, 63);
+}

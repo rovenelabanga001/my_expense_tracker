@@ -34,6 +34,7 @@ export default function Transactions() {
     }
   }, [status, session]);
 
+  //fetch transactions
   useEffect(() => {
     const fetchTransactions = async () => {
       try {

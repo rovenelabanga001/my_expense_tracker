@@ -17,12 +17,16 @@
   border: none;
   font-size: 10px;
   color: rgb(19, 1, 63);
+  cursor: pointer;
 }
 .search-container button svg {
   font-size: 30px;
 }
-.search-container input {
+.search-input-container {
   width: 30%;
+}
+.search-input-container input {
+  width: 100%;
   background-color: white;
   border: 2px solid rgb(19, 1, 63);
   height: 30px;
@@ -31,15 +35,15 @@
   transition: 0.3s ease-in-out;
   margin-bottom: 30px;
 }
-.search-container input::placeholder {
+.search-input-container input::placeholder {
   color: black;
 }
-.search-container input:focus {
+.search-input-container input:focus {
   background: rgb(19, 1, 63);
   color: white;
   border: none;
 }
-.search-container input:focus::placeholder {
+.search-input-container input:focus::placeholder {
   color: transparent;
 }
 .search-container .buttons-container {
