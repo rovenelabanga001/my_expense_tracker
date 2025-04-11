@@ -70,9 +70,14 @@
   color: rgb(19, 1, 63);
   border: 2px solid rgb(19, 1, 63);
 }
+.search-container .buttons-container button.active {
+  background: white;
+  color: rgb(19, 1, 63);
+  border: 2px solid rgb(19, 1, 63);
+}
 .budget-cards-container {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   align-items: flex-start;
   flex-wrap: wrap;
   gap: 20px;
@@ -88,6 +93,9 @@
   border-radius: 15px;
   padding: 10px;
   font-size: 13px;
+}
+.inactive-card {
+  background: gray;
 }
 .budget-card-header {
   display: flex;
@@ -171,4 +179,10 @@ input:checked + .slider:before {
 .budget-card-header svg {
   font-size: 30px;
   color: white;
+}
+.card-buttons-container button{
+  cursor: pointer;
+}
+.card-buttons-container button svg{
+font-size: 15px;
 }

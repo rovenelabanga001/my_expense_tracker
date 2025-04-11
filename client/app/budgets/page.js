@@ -2,14 +2,17 @@
 import "./page.css";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { FaPlus } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 import PrivateRoute from "../components/PrivateRoute";
 import { useEffect, useState } from "react";
 import Modal from "../components/Modal";
 import AddBudgetForm from "../components/AddBudgetForm";
 import Noresults from "../components/Noresults";
+import toast from "react-hot-toast";
 export default function Budgets() {
   const [budgets, setBudgets] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("active");
 
   //fetch budgets
   useEffect(() => {
@@ -32,16 +35,69 @@ export default function Budgets() {
 
   const filteredBudgets = budgets.filter((budget) => {
     const term = searchTerm.toLowerCase();
-    return (
+    const matchesSearch =
       budget.name.toLowerCase().includes(term) ||
       budget.category.toLowerCase().includes(term) ||
-      budget.amount.toString().includes(term)
-    );
+      budget.amount.toString().includes(term);
+
+    const matchesStatus =
+      statusFilter === "all" || budget.status.toLowerCase() === statusFilter;
+    return matchesSearch && matchesStatus;
   });
 
   //add budget function
   const handleAddBudget = (newBudget) => {
     setBudgets((prevBudgets) => [...prevBudgets, newBudget]);
+  };
+
+  //handle card toggle
+  const handleToggleStatus = async (id, currentStatus) => {
+    const newStatus = currentStatus === "active" ? "inactive" : "active";
+
+    try {
+      const response = await fetch(`http://localhost:3001/budgets/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update budget status");
+      }
+
+      const updatedBudget = await response.json();
+
+      setBudgets((prevBudgets) =>
+        prevBudgets.map((budget) =>
+          budget.id === id
+            ? { ...budget, status: updatedBudget.status }
+            : budget
+        )
+      );
+    } catch (error) {
+      console.error("Error updating status", error);
+    }
+  };
+
+  //Delete card logic
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3001/budgets/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete budget");
+      }
+
+      toast.success("Budget deleted successfully");
+
+      setBudgets((prevBudgets) =>
+        prevBudgets.filter((budget) => budget.id !== id)
+      );
+    } catch (error) {
+      console.error("Error deleting budget", error);
+      toast.error("Failed, Please try again")
+    }
   };
   return (
     <PrivateRoute>
@@ -68,15 +124,35 @@ export default function Budgets() {
             />
           </div>
           <div className="buttons-container">
-            <button>All</button>
-            <button>Active</button>
-            <button>Inactive</button>
+            <button
+              className={statusFilter === "active" ? "active" : ""}
+              onClick={() => setStatusFilter("active")}
+            >
+              Active
+            </button>
+            <button
+              className={statusFilter === "active" ? "inactive" : ""}
+              onClick={() => setStatusFilter("inactive")}
+            >
+              Inactive
+            </button>
+            <button
+              className={statusFilter === "all" ? "active" : ""}
+              onClick={() => setStatusFilter("all")}
+            >
+              All
+            </button>
           </div>
         </div>
         <div className="budget-cards-container">
           {filteredBudgets.length > 0 ? (
             filteredBudgets.map((budget, index) => (
-              <div className="budget-card" key={index}>
+              <div
+                className={`budget-card ${
+                  budget.status === "inactive" ? "inactive-card" : ""
+                }`}
+                key={index}
+              >
                 <div className="budget-card-header">
                   <div className="budget-name">
                     <p>
@@ -95,12 +171,21 @@ export default function Budgets() {
                 <div className="budget-card-header">
                   <div className="checkbox-container">
                     <label className="switch">
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        checked={budget.status === "active"}
+                        onChange={() =>
+                          handleToggleStatus(budget.id, budget.status)
+                        }
+                      />
                       <span className="slider"></span>
                     </label>
                     <p>{budget.status}</p>
                   </div>
-                  <div>
+                  <div className="card-buttons-container">
+                    <button onClick={() => handleDelete(budget.id)}>
+                      <MdDelete />
+                    </button>
                     <button>
                       <IoMdInformationCircleOutline />
                     </button>
