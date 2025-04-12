@@ -283,7 +283,8 @@
       "firstname": "Cutie",
       "lastname": "Patootie",
       "email": "cutiepatootie@gmail.com",
-      "password": "1234"
+      "password": "1234",
+      "firtsname": "Cutie"
     }
   ]
 }
