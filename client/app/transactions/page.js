@@ -104,7 +104,6 @@ export default function Transactions() {
       setTransactions((prevTransactions) =>
         prevTransactions.filter((transaction) => transaction.id !== id)
       );
-      toast.success("Transaction deleted successfully");
     } catch (error) {
       console.error(error.message);
       toast.error("Failed! Please try again");

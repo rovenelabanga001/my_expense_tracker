@@ -1,0 +1,30 @@
+form.reminder-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+form.reminder-form h3 {
+  color: rgb(19, 1, 63);
+}
+form.reminder-form input {
+  width: 80%;
+  height: 30px;
+  border: 2px solid rgb(19, 1, 63);
+  padding: 0 8px;
+}
+form.reminder-form button{
+    width: 30%;
+    background: rgb(19, 1, 63);
+    color: white;
+    padding: 10px;
+    border: none;
+    transition: 0.3s ease-in-out;
+}
+form.reminder-form button:hover{
+    background: white;
+  color: rgb(19, 1, 63);
+  border: 2px solid rgb(19, 1, 63);
+}

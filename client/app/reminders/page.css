@@ -10,6 +10,7 @@
 }
 .search-reminder {
   display: flex;
+  gap: 10%;
   justify-content: space-between;
   width: 100%;
 }
@@ -27,8 +28,12 @@
   font-size: 30px;
   color: rgb(19, 1, 63);
 }
-.search-reminder input[type="text"] {
+.search-reminder-input {
   width: 30%;
+  gap: 20px;
+}
+.search-reminder-input input[type="text"] {
+  width: 100%;
   background-color: white;
   border: 2px solid rgb(19, 1, 63);
   height: 30px;
@@ -37,25 +42,49 @@
   transition: 0.3s ease-in-out;
   margin-bottom: 30px;
 }
-.search-reminder input[type="text"]::placeholder {
+.search-reminder-input input[type="text"]::placeholder {
   color: black;
 }
-.search-reminder input[type="text"]:focus {
+.search-reminder-input input[type="text"]:focus {
   background: rgb(19, 1, 63);
   color: white;
   border: none;
 }
-.search-reminder input[type="text"]:focus::placeholder {
+.search-reminder-input input[type="text"]:focus::placeholder {
   color: transparent;
 }
-.search-reminder input[type="date"] {
+.search-reminder-input input[type="date"] {
   height: 30px;
+  border: 2px solid rgb(19, 1, 63);
+}
+.filter-buttons {
+  display: flex;
+  gap: 5px;
+}
+.filter-buttons button {
+  background: rgb(19, 1, 63);
+  height: 30px;
+  color: white;
+  border: none;
+  width: 100px;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: 0.3s ease-in;
+}
+.filter-buttons button:hover {
+  background: white;
+  color: rgb(19, 1, 63);
+  border: 2px solid rgb(19, 1, 63);
+}
+.filter-buttons button.active {
+  background: white;
+  color: rgb(19, 1, 63);
   border: 2px solid rgb(19, 1, 63);
 }
 .reminders-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
   width: 100%;
   gap: 30px;
@@ -66,11 +95,10 @@
   margin-bottom: 0;
 }
 .reminders-container .reminder-card {
-  width: 100%;
+  width: 90%;
   background: rgb(19, 1, 63);
-  max-height: 80px;
-  padding: 15px 10px ;
-  height: 80px;
+  padding: 15px 10px;
+  height: auto;
   color: white;
   overflow: hidden;
 }
@@ -80,6 +108,18 @@
 .reminder-card .card-header {
   display: flex;
   justify-content: space-between;
+}
+.card-header .card-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.card-header .card-status p {
+  font-style: italic;
+  font-weight: 100;
+  color: gray;
+  font-size: smaller;
 }
 .reminder-card .card-footer {
   display: flex;
@@ -105,4 +145,16 @@
 }
 .card-footer .footer-buttons button svg {
   color: red;
+}
+.spinner {
+  margin-left: 0.5rem;
+  animation: spin 1s linear infinite;
+  font-size: 1rem;
+  color: #555;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

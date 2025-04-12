@@ -23,7 +23,7 @@ export default function EditTransactionForm({
       [name]: value,
     }));
   };
-
+ //autofill the input fields
   useEffect(() => {
     if (transaction) {
       setFormData({
@@ -55,10 +55,9 @@ export default function EditTransactionForm({
 
       const updatedTransaction = await response.json();
       onUpdate(updatedTransaction);
-      toast.success("Updated successfully");
       onClose();
     } catch (error) {
-      console.error(error.message);
+      console.error("Failed to update budget", error);
       toast.error("Failed! Please try again");
     } finally {
       setLoading(false);
