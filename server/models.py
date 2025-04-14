@@ -20,8 +20,12 @@ class User(db.Model):
     email = db.Column(db.String)
     password = db.Column(db.String)
 
+    transactions = db.relationship("Transaction", back_populates = "user", cascade = "all, delete-orphan")
+    budgets = db.relationship("Budget", back_populates = "user", cascade = "all, delete-orphan")
+    reminders = db.relationship("Reminder", back_populates = "user", cascade = "all, delete-orphan")
+
     def __repr__(self):
-        return f'<User {self.id}, Name: {self.firstname} {self.lastname}, Email : {self.email}>'
+        return f'<User {self.id}, Name: {self.firstname} {self.lastname}, Email: {self.email}>'
 
 class Transaction(db.Model):
     __tablename__ = "transactions"
@@ -34,6 +38,9 @@ class Transaction(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     budget_id = db.Column(db.Integer, db.ForeignKey("budgets.id"))
+
+    user = db.relationship("User", back_populates="transactions")
+    budget = db.relationship("Budget", back_populates="transactions")
 
     def __repr__(self):
         return f'<Transaction {self.id}, Name: {self.name}, Type: {self.transaction_type}, Amount: {self.amount}, Date: {self.date}>'
@@ -53,6 +60,9 @@ class Budget(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
+    user = db.relationship("User", back_populates = "budgets")
+    transactions = db.relationship("Transaction", back_populates="budget", cascade = "all, delete-orphan")
+
     def __repr__(self):
         return f'<Budget {self.id}, Name: {self.name}, Category: {self.category}, Amount: {self.amount}, Spent: {self.spent_amount}>'
 
@@ -67,6 +77,8 @@ class Reminder(db.Model):
     pinned = db.Column(db.Boolean)
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+
+    user = db.relationship("User", back_populates = "reminders")
 
     def __repr__(self):
         return f'<Reminder: {self.id}, Name: {self.name}, Date: {self.date}, Time: {self.time}, Status: {self.status}>'
