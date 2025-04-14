@@ -29,6 +29,7 @@ const handler = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
+        token.id = user.id;
         token.firstname = user.firstname;
         token.lastname = user.lastname;
         token.email = user.email;
@@ -36,6 +37,7 @@ const handler = NextAuth({
       return token;
     },
     async session({ session, token }) {
+      session.user.id = token.id;
       session.user.firstname = token.firstname;
       session.user.lastname = token.lastname;
       session.user.email = token.email;
