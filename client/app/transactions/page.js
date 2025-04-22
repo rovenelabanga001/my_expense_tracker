@@ -27,12 +27,13 @@ export default function Transactions() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const userId = session?.user?.id;
-  console.log("Id ", userId)
+  console.log("Id ", userId);
 
   const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   //protect route
   useEffect(() => {
+    if (status === "loading") return;
     if (status === "unauthenticated" && !session) {
       router.push("/signin");
     }
@@ -45,10 +46,13 @@ export default function Transactions() {
         try {
           setLoading(true);
           setError(null);
-  
-          const response = await fetch(`${baseURL}/users/${session.user.id}/transactions`);
-          if (!response.ok) throw new Error(`HTTP error! Status ${response.status}`);
-  
+
+          const response = await fetch(
+            `${baseURL}/users/${session.user.id}/transactions`
+          );
+          if (!response.ok)
+            throw new Error(`HTTP error! Status ${response.status}`);
+
           const data = await response.json();
           setTransactions(data);
         } catch (error) {
@@ -58,11 +62,10 @@ export default function Transactions() {
           setLoading(false);
         }
       };
-  
+
       fetchTransactions();
     }
   }, [session, status]);
-  
 
   //handle type filtering
   const handleTypeChange = (type) => {
@@ -100,7 +103,7 @@ export default function Transactions() {
   //DELETE reequest handling
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`http://localhost:3001/transactions/${id}`, {
+      const res = await fetch(`${baseURL}/transactions/${id}`, {
         method: "DELETE",
       });
 
@@ -190,7 +193,15 @@ export default function Transactions() {
                 {tx.type}
               </div>
               <div>{tx.amount}</div>
-              <div>{tx.date}</div>
+              <div>
+                {" "}
+                {new Date(tx.date).toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                })}
+                {/* {tx.date} */}
+              </div>
               <div>
                 <Modal
                   trigger={

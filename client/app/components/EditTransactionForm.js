@@ -9,11 +9,12 @@ export default function EditTransactionForm({
 }) {
   const [formData, setFormData] = useState({
     name: "",
-    type: "",
+    transaction_type: "",
     amount: "",
     date: "",
   });
 
+  const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -23,14 +24,17 @@ export default function EditTransactionForm({
       [name]: value,
     }));
   };
- //autofill the input fields
+  //autofill the input fields
   useEffect(() => {
     if (transaction) {
+      const formattedDate = transaction.date
+      ? new Date(transaction.date).toISOString().split("T")[0]
+      : "";
       setFormData({
         name: transaction.name || "",
-        type: transaction.type || "",
+        transaction_type: transaction.type || "",
         amount: transaction.amount || "",
-        date: transaction.date || "",
+        date: formattedDate,
       });
     }
   }, [transaction]);
@@ -39,13 +43,19 @@ export default function EditTransactionForm({
     e.preventDefault();
     setLoading(true);
 
+    const formDataWithNumberAmount = {
+      ...formData,
+      amount: parseFloat(formData.amount),
+      date: new Date(formData.date).toISOString().split("T")[0],
+    };
+
     try {
       const response = await fetch(
-        `http://localhost:3001/transactions/${transaction.id}`,
+        `${baseURL}/transactions/${transaction.id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(formDataWithNumberAmount),
         }
       );
 
@@ -72,13 +82,11 @@ export default function EditTransactionForm({
         placeholder="Name"
         value={formData.name}
         onChange={handleChange}
-        required
       />
       <select
-        name="type"
-        value={formData.type}
+        name="transaction_type"
+        value={formData.transaction_type}
         onChange={handleChange}
-        required
       >
         <option value="" disabled hidden>
           Type
@@ -92,14 +100,12 @@ export default function EditTransactionForm({
         placeholder="Amount"
         value={formData.amount}
         onChange={handleChange}
-        required
       />
       <input
         type="date"
         name="date"
         value={formData.date}
         onChange={handleChange}
-        required
       />
       <button type="submit" className="add-btn" disabled={loading}>
         Update

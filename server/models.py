@@ -87,7 +87,20 @@ class Budget(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<Budget {self.id}, Name: {self.name}, Category: {self.category}, Amount: {self.amount}, Spent: {self.spent_amount}>'
-
+    
+    def to_dict(self):
+        return{
+            "id": self.id,
+            "user_id": self.user_id,
+            "name" : self.name,
+            "category": self.category,
+            "amount": self.amount,
+            "spent_amount": self.spent_amount,
+            "start_date": self.start_date,
+            "end_date": self.end_date,
+            "created_at": self.created_at,
+            "status": self.status
+        }
 class Reminder(db.Model, SerializerMixin):
     __tablename__ = "reminders"
 

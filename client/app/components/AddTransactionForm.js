@@ -22,13 +22,21 @@ export default function AddTransactionForm({ onClose, onAddTransaction }) {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (status !== "authenticated" && !session?.user?.id) {
+      return;
+    }
+
+    const normalizedDate = new Date(formData.date).toISOString().split("T")[0];
+
     const newTransaction = {
       name: formData.name,
       transaction_type: formData.type,
       amount: parseFloat(formData.amount),
-      date: formData.date,
+      date: normalizedDate,
       user_id: userId,
     };
+
+    console.log(newTransaction);
 
     try {
       const res = await fetch(`${baseURL}/transactions`, {
@@ -80,7 +88,11 @@ export default function AddTransactionForm({ onClose, onAddTransaction }) {
       />
       <input
         type="date"
-        value={formData.date}
+        value={
+          formData.date
+            ? new Date(formData.date).toISOString().split("T")[0]
+            : ""
+        }
         name="date"
         onChange={handleChange}
         max={today}
