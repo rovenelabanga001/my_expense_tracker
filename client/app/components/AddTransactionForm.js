@@ -2,7 +2,11 @@
 import { useState } from "react";
 import "./Form.css";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 export default function AddTransactionForm({ onClose, onAddTransaction }) {
+  const { data: session, status } = useSession();
+  const userId = session.user.id;
+  const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [formData, setFormData] = useState({
     name: "",
     type: "Expense",
@@ -20,13 +24,14 @@ export default function AddTransactionForm({ onClose, onAddTransaction }) {
     e.preventDefault();
     const newTransaction = {
       name: formData.name,
-      type: formData.type,
+      transaction_type: formData.type,
       amount: parseFloat(formData.amount),
       date: formData.date,
+      user_id: userId,
     };
 
     try {
-      const res = await fetch("http://localhost:3001/transactions", {
+      const res = await fetch(`${baseURL}/transactions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newTransaction),
@@ -82,7 +87,7 @@ export default function AddTransactionForm({ onClose, onAddTransaction }) {
         required
       />
       <button type="submit" className="add-btn">
-        Add 
+        Add
       </button>
     </form>
   );

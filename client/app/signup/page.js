@@ -10,6 +10,9 @@ import { ToastContainer, toast } from "react-toastify";
 import Link from "next/link";
 
 export default function Signup() {
+  
+  const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+  
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -36,7 +39,7 @@ export default function Signup() {
       return;
     }
 
-    const res = await fetch("http://localhost:3001/users", {
+    const res = await fetch(`${baseURL}/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

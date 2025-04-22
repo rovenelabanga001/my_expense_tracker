@@ -1,18 +1,28 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
+const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
       async authorize(credentials) {
-        const res = await fetch(
-          "http://localhost:3001/users?email=" + credentials.email
-        );
-
-        const users = await res.json();
-        const user = users[0];
-
-        if (user && user.password === credentials.password) {
+        try{
+          const res = await fetch(`${baseURL}/signin`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: credentials.email,
+              password: credentials.password,
+            }),
+          });
+  
+          const user = await res.json();
+  
+          if (!res.ok) {
+            throw new Error(user.error || "Login Failed");
+          }
+  
           return {
             id: user.id,
             firstname: user.firstname,
@@ -20,9 +30,10 @@ const handler = NextAuth({
             email: user.email,
             name: `${user.firstname} ${user.lastname}`,
           };
+        }catch(error){
+          console.error("Auth error: ", error.message);
+          return null
         }
-
-        return null;
       },
     }),
   ],

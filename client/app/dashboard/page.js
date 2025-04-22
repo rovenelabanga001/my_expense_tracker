@@ -24,6 +24,9 @@ export default function Dashboard() {
   const [totalAmount, setTotalAmount] = useState(0);
 
   const { data: session, status } = useSession();
+  const userId = session.user.id;
+
+  const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   //protect route
   useEffect(() => {
@@ -39,7 +42,7 @@ export default function Dashboard() {
         setLoading(true);
         setError(null);
 
-        const response = await fetch("http://localhost:3001/transactions");
+        const response = await fetch(`${baseURL}/users/${userId}/transactions`);
 
         if (!response.ok) {
           throw new Error(`HTTP Error! Status: ${response.status}`);
@@ -277,7 +280,7 @@ export default function Dashboard() {
                     ? new Date(transactionDate).toDateString()
                     : "No Transactions"}
                 </h2>
-                <h2>{totalAmount.toFixed(2)}</h2>
+                <h2>{parseFloat(totalAmount).toFixed(2)}</h2>
               </div>
               {filteredTransactions.length > 0 ? (
                 filteredTransactions.map((t) => (
@@ -292,7 +295,7 @@ export default function Dashboard() {
                         {/* should be category */}
                       </span>
                     </div>
-                    <h5>{t.amount.toFixed(2)}</h5>
+                    <h5>{parseFloat(t.amount).toFixed(2)}</h5>
                   </div>
                 ))
               ) : (

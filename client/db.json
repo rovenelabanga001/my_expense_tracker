@@ -62,6 +62,13 @@
       "type": "Expense",
       "amount": 2500,
       "date": "2025-04-09"
+    },
+    {
+      "id": "dd21",
+      "name": "Titus",
+      "type": "Income",
+      "amount": "2500",
+      "date": "2025-04-17"
     }
   ],
   "reminders": [
@@ -71,7 +78,7 @@
       "date": "2025-03-12",
       "time": "14:30",
       "status": "complete",
-      "pinned": false
+      "pinned": true
     },
     {
       "id": "4",
@@ -190,19 +197,8 @@
       "start_date": "2025-03-01",
       "end_date": "2025-03-31",
       "created_at": "2025-02-26",
-      "status": "inactive",
-      "id": "d328"
-    },
-    {
-      "name": "Transportation",
-      "category": "Transport",
-      "amount": 150,
-      "spent_amount": 40,
-      "start_date": "2025-03-01",
-      "end_date": "2025-03-31",
-      "created_at": "2025-02-27",
       "status": "active",
-      "id": "1729"
+      "id": "d328"
     },
     {
       "name": "Entertainment",
@@ -223,7 +219,7 @@
       "start_date": "2025-03-01",
       "end_date": "2025-03-31",
       "created_at": "2025-02-28",
-      "status": "inactive",
+      "status": "active",
       "id": "767a"
     },
     {
@@ -234,18 +230,18 @@
       "start_date": "2025-03-01",
       "end_date": "2025-12-31",
       "created_at": "2025-02-25",
-      "status": "inactive",
+      "status": "active",
       "id": "03f0"
     },
     {
-      "id": "e091",
-      "name": "Buy new TV",
-      "category": "Housing",
-      "amount": "39000",
+      "id": "39f2",
+      "name": "company",
+      "category": "Leisure",
+      "amount": "20000",
       "spent_amount": 0,
-      "start_date": "2025-04-12",
-      "end_date": "2025-05-12",
-      "created_at": "2025-04-10T22:47:45.019Z",
+      "start_date": "2025-04-07",
+      "end_date": "2025-07-07",
+      "created_at": "2025-04-17T20:38:30.485Z",
       "status": "active"
     }
   ],
@@ -285,6 +281,13 @@
       "email": "cutiepatootie@gmail.com",
       "password": "1234",
       "firtsname": "Cutie"
+    },
+    {
+      "id": "9536",
+      "firstname": "Titus",
+      "lastname": "Mochire",
+      "email": "nyarikimochire@gmail.com",
+      "password": "38257636"
     }
   ]
 }

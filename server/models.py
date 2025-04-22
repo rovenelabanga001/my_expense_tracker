@@ -2,6 +2,7 @@
 
 from flask_sqlalchemy import SQLAlchemy 
 from sqlalchemy import MetaData
+from sqlalchemy_serializer import SerializerMixin
 
 metadata = MetaData(
     naming_convention={
@@ -11,7 +12,7 @@ metadata = MetaData(
 
 db = SQLAlchemy(metadata=metadata)
 
-class User(db.Model):
+class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key = True)
@@ -24,10 +25,19 @@ class User(db.Model):
     budgets = db.relationship("Budget", back_populates = "user", cascade = "all, delete-orphan")
     reminders = db.relationship("Reminder", back_populates = "user", cascade = "all, delete-orphan")
 
+    serialize_rules = ('-transactions.user','-transactions.budget', '-budget.transactions', '-budgets.user', '-reminders.user')
+
+    def to_dict(self):
+        return{
+            "id": self.id,
+            "firstname": self.firstname,
+            "lastname": self.lastname,
+            "email": self.email
+        }
     def __repr__(self):
         return f'<User {self.id}, Name: {self.firstname} {self.lastname}, Email: {self.email}>'
 
-class Transaction(db.Model):
+class Transaction(db.Model, SerializerMixin):
     __tablename__ = "transactions"
 
     id = db.Column(db.Integer, primary_key = True)
@@ -42,10 +52,20 @@ class Transaction(db.Model):
     user = db.relationship("User", back_populates="transactions")
     budget = db.relationship("Budget", back_populates="transactions")
 
+    serialize_rules = ('-user', '-budget', '-user.transactions', '-budget.transactions', '-user.budgets', '-user.reminders')
+
+    def to_dict(self):
+        return{
+            "id": self.id,
+            "name": self.name,
+            "type": self.transaction_type,
+            "amount": self.amount,
+            "date": self.date
+        }
     def __repr__(self):
         return f'<Transaction {self.id}, Name: {self.name}, Type: {self.transaction_type}, Amount: {self.amount}, Date: {self.date}>'
 
-class Budget(db.Model):
+class Budget(db.Model, SerializerMixin):
     __tablename__ = "budgets"
 
     id = db.Column(db.Integer, primary_key = True)
@@ -63,10 +83,12 @@ class Budget(db.Model):
     user = db.relationship("User", back_populates = "budgets")
     transactions = db.relationship("Transaction", back_populates="budget", cascade = "all, delete-orphan")
 
+    serialize_rules = ('-user', '-transactions','-user.budgets', '-transactions.budget', '-user.transactions', '-user.reminders')
+
     def __repr__(self):
         return f'<Budget {self.id}, Name: {self.name}, Category: {self.category}, Amount: {self.amount}, Spent: {self.spent_amount}>'
 
-class Reminder(db.Model):
+class Reminder(db.Model, SerializerMixin):
     __tablename__ = "reminders"
 
     id = db.Column(db.Integer, primary_key = True)
@@ -79,6 +101,9 @@ class Reminder(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
     user = db.relationship("User", back_populates = "reminders")
+
+    serialize_rules = ('-user.reminders', '-user.transactions', '-user.budgets')
+
 
     def __repr__(self):
         return f'<Reminder: {self.id}, Name: {self.name}, Date: {self.date}, Time: {self.time}, Status: {self.status}>'

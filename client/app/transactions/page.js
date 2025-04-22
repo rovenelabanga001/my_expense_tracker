@@ -26,6 +26,10 @@ export default function Transactions() {
 
   const router = useRouter();
   const { data: session, status } = useSession();
+  const userId = session?.user?.id;
+  console.log("Id ", userId)
+
+  const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   //protect route
   useEffect(() => {
@@ -36,28 +40,29 @@ export default function Transactions() {
 
   //fetch transactions
   useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const response = await fetch("http://localhost:3001/transactions");
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status ${response.status}`);
+    if (status === "authenticated" && session?.user?.id) {
+      const fetchTransactions = async () => {
+        try {
+          setLoading(true);
+          setError(null);
+  
+          const response = await fetch(`${baseURL}/users/${session.user.id}/transactions`);
+          if (!response.ok) throw new Error(`HTTP error! Status ${response.status}`);
+  
+          const data = await response.json();
+          setTransactions(data);
+        } catch (error) {
+          console.error("Error fetching transactions", error);
+          setError("Failed to load transactions. Please try again later");
+        } finally {
+          setLoading(false);
         }
-
-        const data = await response.json();
-        setTransactions(data);
-      } catch (error) {
-        console.error("Error fetching transactions", error);
-        setError("Failed to load transactions. Please try again later");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchTransactions();
-  }, []);
+      };
+  
+      fetchTransactions();
+    }
+  }, [session, status]);
+  
 
   //handle type filtering
   const handleTypeChange = (type) => {
