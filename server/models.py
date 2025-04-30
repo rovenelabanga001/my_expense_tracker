@@ -120,3 +120,13 @@ class Reminder(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<Reminder: {self.id}, Name: {self.name}, Date: {self.date}, Time: {self.time}, Status: {self.status}>'
+    
+    def to_dict(self):
+        return{
+            "id": self.id,
+            "name": self.name,
+            "date":self.date.isoformat() if self.date else None,
+            "time":self.time.isoformat() if self.time else None, 
+            "status": self.status,
+            "pinned": self.pinned
+        }

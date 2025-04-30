@@ -10,6 +10,7 @@ import AddReminderForm from "../components/AddReminderForm";
 import { useEffect, useState } from "react";
 import PrivateRoute from "../components/PrivateRoute";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 import EditReminderForm from "../components/EditReminderForm";
 export default function Reminders() {
   const [reminders, setReminders] = useState([]);
@@ -17,12 +18,19 @@ export default function Reminders() {
   const [selectedDate, setSelectedDate] = useState("");
   const [filter, setFilter] = useState("all");
   const [loading, setLoading] = useState(false);
+  const { data: session, status } = useSession();
+
+  const userId = session?.user?.id;
+  console.log("User Id", userId);
 
   //fetch reminders
   useEffect(() => {
+    if (status !== "authenticated") return;
     const fetchReminders = async () => {
       try {
-        const response = await fetch("http://localhost:3001/reminders");
+        const response = await fetch(
+          `http://127.0.0.1:5000/users/${userId}/reminders`
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status ${response.status}`);
@@ -35,7 +43,7 @@ export default function Reminders() {
       }
     };
     fetchReminders();
-  }, []);
+  }, [status, session]);
 
   const filteredReminders = reminders
     .filter((reminder) => {
@@ -152,7 +160,7 @@ export default function Reminders() {
     );
   };
 
-  //DELE request handling
+  //DELETE request handling
   const handleDeleteReminder = async (id) => {
     try {
       const res = await fetch(`http://localhost:3001/reminders/${id}`, {
@@ -187,6 +195,7 @@ export default function Reminders() {
               <AddReminderForm
                 onClose={close}
                 onAddReminder={handleAddReminder}
+                userId={userId}
               />
             )}
           </Modal>
@@ -269,7 +278,9 @@ export default function Reminders() {
                     )}
                   </Modal>
                   <button>
-                    <MdDelete onClick={() => handleDeleteReminder(reminder.id)}/>
+                    <MdDelete
+                      onClick={() => handleDeleteReminder(reminder.id)}
+                    />
                   </button>
                 </div>
               </div>

@@ -1,8 +1,7 @@
 import { useState } from "react";
 import "./ReminderForm.css";
 import toast from "react-hot-toast";
-import reminders from "@/public/reminders";
-export default function AddReminderForm({ onClose, onAddReminder }) {
+export default function AddReminderForm({ onClose, onAddReminder, userId }) {
   const [formData, setFormData] = useState({
     name: "",
     date: "",
@@ -23,10 +22,11 @@ export default function AddReminderForm({ onClose, onAddReminder }) {
       time: formData.time,
       status: "incomplete",
       pinned: false,
+      user_id: userId
     };
 
     try {
-      const response = await fetch("http://localhost:3001/reminders", {
+      const response = await fetch("http://127.0.0.1:5000/reminders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newReminder),

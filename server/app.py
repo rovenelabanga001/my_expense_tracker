@@ -270,10 +270,43 @@ api.add_resource(UserBudgets, "/users/<int:user_id>/budgets")
 
 class Reminders(Resource):
     def get(self):
-        response_dict_list = [r.to_dict for r in Reminder.query.all()]
+        response_dict_list = [r.to_dict() for r in Reminder.query.all()]
         
         response = make_response(response_dict_list, 200)
         return response
+
+    def post(self):
+        data = request.get_json()
+        try:
+            date_str = data.get("date")
+            time_str = data.get("time")
+
+            parsed_date = datetime.strptime(date_str, "%Y-%m-%d").date() if date_str else None
+            parsed_time = datetime.strptime(time_str, "%H:%M").time() if time_str else None
+            new_reminder = Reminder(
+                name = data.get("name"),
+                date = parsed_date,
+                time = parsed_time,
+                status = data.get("status"),
+                pinned = data.get("pinned"),
+                user_id = data.get("user_id")
+            )
+
+            db.session.add(new_reminder)
+            db.session.commit()
+
+            return make_response(new_reminder.to_dict(), 201)
+
+        except Exception as e:
+            return make_response({"error": str(e)}, 400)
 api.add_resource(Reminders, "/reminders")
+
+class UserReminders(Resource):
+    def get(self, user_id):
+        reminders = Reminder.query.filter_by(user_id = user_id).all()
+        response_dict_list = [r.to_dict() for r in reminders]
+
+        return make_response(response_dict_list, 200)
+api.add_resource(UserReminders, "/users/<int:user_id>/reminders")
 if __name__ == '__main__':
     app.run(port = 5000, debug = True)
