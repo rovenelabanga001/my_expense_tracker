@@ -9,16 +9,22 @@ import Modal from "../components/Modal";
 import AddBudgetForm from "../components/AddBudgetForm";
 import Noresults from "../components/Noresults";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 export default function Budgets() {
   const [budgets, setBudgets] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("active");
-
+  const [statusFilter, setStatusFilter] = useState("all");
+  const { data: session, status } = useSession();
+  const userId = session?.user?.id;
+  const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
   //fetch budgets
   useEffect(() => {
+    if (status !== "authenticated") return;
     const fetchBudgets = async () => {
       try {
-        const response = await fetch("http://localhost:3001/budgets");
+        const response = await fetch(
+          `${baseURL}/users/${session?.user?.id}/budgets`
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status ${response.status}`);
@@ -31,7 +37,7 @@ export default function Budgets() {
       }
     };
     fetchBudgets();
-  }, []);
+  }, [status, session]);
 
   const filteredBudgets = budgets.filter((budget) => {
     const term = searchTerm.toLowerCase();
@@ -55,7 +61,7 @@ export default function Budgets() {
     const newStatus = currentStatus === "active" ? "inactive" : "active";
 
     try {
-      const response = await fetch(`http://localhost:3001/budgets/${id}`, {
+      const response = await fetch(` http://127.0.0.1:5000/budgets/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
@@ -67,6 +73,7 @@ export default function Budgets() {
 
       const updatedBudget = await response.json();
 
+      console.log("Updated budget", updatedBudget);
       setBudgets((prevBudgets) =>
         prevBudgets.map((budget) =>
           budget.id === id
@@ -82,7 +89,7 @@ export default function Budgets() {
   //Delete card logic
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3001/budgets/${id}`, {
+      const response = await fetch(`http://127.0.0.1:5000/budgets/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) {
@@ -96,7 +103,7 @@ export default function Budgets() {
       );
     } catch (error) {
       console.error("Error deleting budget", error);
-      toast.error("Failed, Please try again")
+      toast.error("Failed, Please try again");
     }
   };
   return (
@@ -112,7 +119,11 @@ export default function Budgets() {
             }
           >
             {({ close }) => (
-              <AddBudgetForm onClose={close} onAddBudget={handleAddBudget} />
+              <AddBudgetForm
+                onClose={close}
+                onAddBudget={handleAddBudget}
+                userId={userId}
+              />
             )}
           </Modal>
           <div className="search-input-container">
@@ -125,6 +136,12 @@ export default function Budgets() {
           </div>
           <div className="buttons-container">
             <button
+              className={statusFilter === "all" ? "active" : ""}
+              onClick={() => setStatusFilter("all")}
+            >
+              All
+            </button>
+            <button
               className={statusFilter === "active" ? "active" : ""}
               onClick={() => setStatusFilter("active")}
             >
@@ -135,12 +152,6 @@ export default function Budgets() {
               onClick={() => setStatusFilter("inactive")}
             >
               Inactive
-            </button>
-            <button
-              className={statusFilter === "all" ? "active" : ""}
-              onClick={() => setStatusFilter("all")}
-            >
-              All
             </button>
           </div>
         </div>

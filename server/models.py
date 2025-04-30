@@ -96,9 +96,9 @@ class Budget(db.Model, SerializerMixin):
             "category": self.category,
             "amount": self.amount,
             "spent_amount": self.spent_amount,
-            "start_date": self.start_date,
-            "end_date": self.end_date,
-            "created_at": self.created_at,
+            "start_date": self.start_date.isoformat() if self.start_date else None,
+            "end_date": self.end_date.isoformat() if self.end_date else None,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
             "status": self.status
         }
 class Reminder(db.Model, SerializerMixin):

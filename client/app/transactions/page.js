@@ -27,7 +27,6 @@ export default function Transactions() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const userId = session?.user?.id;
-  console.log("Id ", userId);
 
   const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 

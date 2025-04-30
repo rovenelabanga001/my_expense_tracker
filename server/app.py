@@ -7,6 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_restful import Api, Resource
 from flask_cors import CORS
 from datetime import datetime
+from dateutil.parser import isoparse
 
 from models import db, User, Transaction, Budget, Reminder
 
@@ -192,7 +193,7 @@ class Budgets(Resource):
         try:
             start_date = datetime.strptime(data["start_date"], "%Y-%m-%d").date()
             end_date = datetime.strptime(data["end_date"], "%Y-%m-%d").date()
-            created_at = datetime.strptime(data["created_at"], "%Y-%m-%d").date()
+            created_at = isoparse(data["created_at"]).date()
             new_budget = Budget(
                 name = data["name"],
                 category = data["category"],
@@ -214,12 +215,65 @@ class Budgets(Resource):
             return make_response({"error": str(e)}, 400)
 api.add_resource(Budgets, "/budgets")
 
+class BudgetById(Resource):
+    def patch(self, id):
+        budget = Budget.query.get(id)
+        if not budget:
+            return({"error": "Budget not found"}, 404)
+
+        data = request.get_json()
+
+        if "name" in data:
+            budget.name = data["name"]
+        if "category" in data:
+            budget.category = data["category"]
+        if "amount" in data:
+            budget.amount = data["amount"]
+        if "spent_amount" in data:
+            budget.spent_amount = data["spent_amount"]
+        if "status" in data:
+            budget.status = data["status"]
+        if "start_date" in data:
+            try:
+                budget.start_date = datetime.fromisoformat(data["start_date"].replace("Z", "")).date()
+            except ValueError:
+                return ({"error": "Invalid start_date format. Use ISO format"}, 400)
+
+        if "end_date" in data:
+            try:
+                budget.end_date = datetime.fromisoformat(data["end_date"].replace("Z", "")).date()
+            except ValueError:
+                return ({"error" : "Invalid end_date format. Use Use ISO format"})
+
+        db.session.commit()
+        return budget.to_dict(), 200
+
+    def delete(self, id):
+        budget = Budget.query.get(id)
+        if not budget:
+            return {"error" : "Budget not found"}, 404
+
+        db.session.delete(budget)
+        db.session.commit()
+        
+        return ({"Message": "Budget deleted successfully"}, 204)
+            
+api.add_resource(BudgetById, "/budgets/<int:id>")
+
 class UserBudgets(Resource):
     def get(self, user_id):
-        budgets = Budgets.query.filter_by(user_id == user_id).all()
+        budgets = Budget.query.filter_by(user_id = user_id).all()
         response_dict_list = [b.to_dict() for b in budgets]
 
         return make_response(response_dict_list, 200)
 api.add_resource(UserBudgets, "/users/<int:user_id>/budgets")
+
+class Reminders(Resource):
+    def get(self):
+        response_dict_list = [r.to_dict for r in Reminder.query.all()]
+        
+        response = make_response(response_dict_list, 200)
+        return response
+api.add_resource(Reminders, "/reminders")
 if __name__ == '__main__':
     app.run(port = 5000, debug = True)

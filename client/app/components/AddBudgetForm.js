@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./BudgetForm.css";
 import toast from "react-hot-toast";
-export default function AddBudgetForm({ onClose, onAddBudget }) {
+export default function AddBudgetForm({ onClose, onAddBudget, userId }) {
   const [formData, setFormData] = useState({
     name: "",
     category: "",
@@ -12,6 +12,8 @@ export default function AddBudgetForm({ onClose, onAddBudget }) {
     created_at: "",
     status: "",
   });
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,10 +32,13 @@ export default function AddBudgetForm({ onClose, onAddBudget }) {
       end_date: formData.end_date,
       created_at: today,
       status: "active",
+      user_id: userId
     };
 
+    console.log(newBudget)
+
     try {
-      const response = await fetch("http://localhost:3001/budgets", {
+      const response = await fetch("http://127.0.0.1:5000/budgets", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newBudget),
