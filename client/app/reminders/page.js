@@ -19,6 +19,7 @@ export default function Reminders() {
   const [filter, setFilter] = useState("all");
   const [loading, setLoading] = useState(false);
   const { data: session, status } = useSession();
+  const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const userId = session?.user?.id;
   console.log("User Id", userId);
@@ -29,7 +30,7 @@ export default function Reminders() {
     const fetchReminders = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:5000/users/${userId}/reminders`
+          `${baseURL}/users/${userId}/reminders`
         );
 
         if (!response.ok) {
@@ -39,7 +40,7 @@ export default function Reminders() {
         const data = await response.json();
         setReminders(data);
       } catch (error) {
-        console.error("Error fetching budgets", error);
+        console.error("Error fetching reminders", error);
       }
     };
     fetchReminders();
@@ -196,6 +197,7 @@ export default function Reminders() {
                 onClose={close}
                 onAddReminder={handleAddReminder}
                 userId={userId}
+                baseURL={baseURL}
               />
             )}
           </Modal>

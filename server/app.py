@@ -301,6 +301,50 @@ class Reminders(Resource):
             return make_response({"error": str(e)}, 400)
 api.add_resource(Reminders, "/reminders")
 
+class ReminderById(Resource):
+    def patch(self, id):
+        reminder = Reminder.query.get(id)
+        if not reminder:
+            return make_response({"error": "Reminder not found"}, 404)
+
+        data = request.get_json()
+
+        if "name" in data:
+            reminder.name = data["name"]
+        
+        if "status" in data:
+            reminder.status = data["status"]
+
+        if "pinned" in data:
+            reminder.status = data["pinned"]
+        
+        if "date" in data:
+            try:
+                reminder.date = datetime.fromisoformat(data["date"]).date()
+            except ValueError:
+                return {"error" : "Invalid date format, Use ISO format (YYYY-MM-DD)"}, 400
+
+        if "time" in data:
+            time_str = data["time"]
+            parsed_time = None
+
+            for fmt in ("%I:%M %p", "%H:%M", "%H:%M:%S"): #12-hour format then 24-hour format
+                try:
+                    parsed_time = datetime.strptime(time_str, fmt).time()
+                    break
+                except ValueError:
+                    continue
+
+            if not parsed_time:
+                return {"error": "Invalid time format, Use 'HH:MM' (24hr) or 'HH:MM AM/PM' (12hr)"}, 400
+
+            reminder.time = parsed_time
+        db.session.commit()
+
+        return make_response(reminder.to_dict(), 200)
+
+api.add_resource(ReminderById, "/reminders/<int:id>")
+
 class UserReminders(Resource):
     def get(self, user_id):
         reminders = Reminder.query.filter_by(user_id = user_id).all()
