@@ -11,9 +11,9 @@ export default function Settings() {
   const [lastName, setLastName] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
 
   const userId = session?.user?.id;
-  console.log(userId);
   //prepopulate firstname and lastname fields
   useEffect(() => {
     if (session?.user) {
@@ -53,7 +53,10 @@ export default function Settings() {
       const res = await fetch(`http://localhost:3001/users/${userId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password: newPassword }),
+        body: JSON.stringify({
+          old_password: oldPassword,
+          new_password: newPassword
+        }),
       });
 
       if (!res.ok) {
@@ -97,6 +100,15 @@ export default function Settings() {
           <h1>Password</h1>
           <form onSubmit={handlePasswordUpdate}>
             <div className="input-container">
+              <label>Old Password</label>
+              <input
+                type="password"
+                name="old_password"
+                placeholder="Old Password"
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+                required
+              />
               <label>New Password</label>
               <input
                 type="password"

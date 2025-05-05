@@ -1,7 +1,11 @@
 # server/app.py
 #/usr/bin/env python3
 
+import os
 from flask import Flask, jsonify, request, make_response
+from flask_jwt_extended import JWTManager
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import jwt_required, get_jwt_identity #auth decorator for protected routes
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_restful import Api, Resource
@@ -14,7 +18,9 @@ from models import db, User, Transaction, Budget, Reminder
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 app.json.compact = True
+jwt = JWTManager(app)
 
 CORS(app, origins=["http://localhost:3000"])
 
@@ -86,12 +92,60 @@ class Signin(Resource):
         if not user or not check_password_hash(user.password, password):
             return{"error" : "Invalid email or password"}, 401
 
-        user_data = user.to_dict()
-        user_data.pop("password", None)
-
-        return make_response(user_data, 200)
+        # user_data = user.to_dict()
+        # user_data.pop("password", None)
+        access_token = create_access_token(identity=user.id)
+        return make_response({"access token": access_token}, 200)
 
 api.add_resource(Signin, "/signin")
+
+#change username
+class ChangeUsername(Resource):
+    @jwt_required()
+    def patch(self):
+        user_id = get_jwt_identity()
+        data = request.get_json()
+
+        firstname = data.get("firstname")
+        lastname = data.get("lastname")
+
+        if not firstname and not lastname:
+            return {"error" : "At least one of firstname or lastname is required"}, 400
+
+        user = User.query.get(user_id)
+
+        if firstname:
+            user.firstname = firstname
+        if lastname:
+            user.lastname = lastname
+
+        db.session.commit()
+
+        return {"message" : "Username updated successfully"}, 200
+api.add_resource(ChangeUsername, "/change-username")
+
+class ChangePassword(Resource):
+    @jwt_required
+    def patch(self):
+        user_id = get_jwt_identity()
+        data = request.get_json()
+
+        old_password = data.get("old_password")
+        new_password = data.get("new_password")
+
+        if not all([old_password, new_password]):
+            return{"error" : "Old and new passwords are required"}, 400
+        
+        user = User.query.get(user_id)
+
+        if not user:
+            return {"error" : "User not found"}, 404
+
+        user.password = generate_password_hash(new_password)
+        db.session.commit()
+
+        return {"message" : "Password changed successfully"} ,200
+api.add_resource(ChangePassword, "/change-password")
 
 #get/post transactions
 class Transactions(Resource):
