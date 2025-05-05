@@ -152,6 +152,10 @@
   font-size: 1rem;
   color: #555;
 }
+.no-reminders{
+  margin: auto;
+  padding-top: 30vh;
+}
 
 @keyframes spin {
   to {

@@ -18,20 +18,18 @@ export default function Reminders() {
   const [selectedDate, setSelectedDate] = useState("");
   const [filter, setFilter] = useState("all");
   const [loading, setLoading] = useState(false);
+  const [loadingId, setLoadingId] = useState(null);
   const { data: session, status } = useSession();
   const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const userId = session?.user?.id;
-  console.log("User Id", userId);
 
   //fetch reminders
   useEffect(() => {
     if (status !== "authenticated") return;
     const fetchReminders = async () => {
       try {
-        const response = await fetch(
-          `${baseURL}/users/${userId}/reminders`
-        );
+        const response = await fetch(`${baseURL}/users/${userId}/reminders`);
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status ${response.status}`);
@@ -86,16 +84,13 @@ export default function Reminders() {
     const updatedStatus =
       reminder.status === "complete" ? "incomplete" : "complete";
 
-    setLoading(true);
+    setLoadingId(reminder.id);
     try {
-      const response = await fetch(
-        `http://localhost:3001/reminders/${reminder.id}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ status: updatedStatus }),
-        }
-      );
+      const response = await fetch(`${baseURL}/reminders/${reminder.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: updatedStatus }),
+      });
 
       if (!response.ok) {
         throw new Error(
@@ -114,7 +109,7 @@ export default function Reminders() {
       console.error("Failed to update status", error.message);
       toast.error("Couldn't update status");
     } finally {
-      setLoading(false);
+      setLoadingId(null);
     }
   };
 
@@ -128,14 +123,11 @@ export default function Reminders() {
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:3001/reminders/${reminder.id}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pinned: !isPinned }),
-        }
-      );
+      const response = await fetch(`${baseURL}/reminders/${reminder.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pinned: !isPinned }),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to update pin status");
@@ -164,7 +156,7 @@ export default function Reminders() {
   //DELETE request handling
   const handleDeleteReminder = async (id) => {
     try {
-      const res = await fetch(`http://localhost:3001/reminders/${id}`, {
+      const res = await fetch(`${baseURL}/reminders/${id}`, {
         method: "DELETE",
       });
 
@@ -240,18 +232,20 @@ export default function Reminders() {
         <div className="reminders-container">
           {pinnedReminders.length > 0 && <p className="pinned">Pinned</p>}
           {pinnedReminders.map((reminder, index) => (
-            <div className="reminder-card pinned-card" key={index}>
+            <div className="reminder-card pinned-card" key={reminder.id}>
               <div className="card-header">
                 <p>{reminder.name}</p>
                 <div className="card-status">
-                  {loading && <FaSpinner className="spinner" />}
+                  {loadingId === reminder.id && (
+                    <FaSpinner className="spinner" />
+                  )}
                   <p>{reminder.status}</p>
                   <label>
                     <input
                       type="checkbox"
                       checked={reminder.status === "complete"}
                       onChange={() => handleStatusToggle(reminder)}
-                      disabled={loading}
+                      disabled={loadingId === reminder.id}
                     />
                   </label>
                 </div>
@@ -276,6 +270,7 @@ export default function Reminders() {
                         onClose={close}
                         onUpdate={handleUpdateReminder}
                         reminder={reminder}
+                        baseURL={baseURL}
                       />
                     )}
                   </Modal>
@@ -288,17 +283,21 @@ export default function Reminders() {
               </div>
             </div>
           ))}
-          <p className="pinned">
-            {filter === "all"
-              ? "All Reminders"
-              : filter === "expired"
-              ? "Expired Reminders"
-              : filter === "upcoming"
-              ? "Upcoming Reminders"
-              : ""}
-          </p>
+          {unpinnedReminders.length > 0 ? (
+            <p className="pinned">
+              {filter === "all"
+                ? "All Reminders"
+                : filter === "expired"
+                ? "Expired Reminders"
+                : filter === "upcoming"
+                ? "Upcoming Reminders"
+                : ""}
+            </p>
+          ) : (
+            <p className="no-reminders">No reminders available</p>
+          )}
           {unpinnedReminders.map((reminder, index) => (
-            <div className="reminder-card" key={index}>
+            <div className="reminder-card" key={reminder.id}>
               <div className="card-header">
                 <p>{reminder.name}</p>
                 <div className="card-status">
@@ -334,6 +333,7 @@ export default function Reminders() {
                         onClose={close}
                         onUpdate={handleUpdateReminder}
                         reminder={reminder}
+                        baseURL={baseURL}
                       />
                     )}
                   </Modal>

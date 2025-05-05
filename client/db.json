@@ -82,9 +82,9 @@
     },
     {
       "id": "5",
-      "name": "Friend's Birthday",
-      "date": "2025-03-20",
-      "time": "All Day",
+      "name": "Attend hackathon",
+      "date": "2025-05-16",
+      "time": "22:00",
       "status": "complete",
       "pinned": true
     },

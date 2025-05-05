@@ -316,7 +316,7 @@ class ReminderById(Resource):
             reminder.status = data["status"]
 
         if "pinned" in data:
-            reminder.status = data["pinned"]
+            reminder.pinned = data["pinned"]
         
         if "date" in data:
             try:
@@ -342,6 +342,17 @@ class ReminderById(Resource):
         db.session.commit()
 
         return make_response(reminder.to_dict(), 200)
+
+    def delete(self, id):
+        reminder = Reminder.query.get(id)
+
+        if not reminder:
+            return make_response({"error": "Reminder not found"}, 404)
+
+        db.session.delete(reminder)
+        db.session.commit()
+
+        return make_response({"message": "Reminder deleted"}, 200)
 
 api.add_resource(ReminderById, "/reminders/<int:id>")
 

@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import "./EditReminderForm.css";
 import Spinner from "./Spinner";
 import toast from "react-hot-toast";
-export default function EditReminderForm({ onClose, onUpdate, reminder }) {
+import Loadingsvg from "./Loadingsvg";
+export default function EditReminderForm({
+  onClose,
+  onUpdate,
+  reminder,
+  baseURL,
+}) {
   const [formData, setFormData] = useState({
     name: "",
     date: "",
@@ -34,14 +40,11 @@ export default function EditReminderForm({ onClose, onUpdate, reminder }) {
     setLoading(true);
 
     try {
-      const res = await fetch(
-        `http://localhost:3001/reminders/${reminder.id}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        }
-      );
+      const res = await fetch(`${baseURL}/reminders/${reminder.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
       if (!res.ok) {
         throw new Error("Failed to update reminder");
@@ -81,7 +84,9 @@ export default function EditReminderForm({ onClose, onUpdate, reminder }) {
         value={formData.time}
         onChange={handleChange}
       />
-      <button type="submit" id="edit">Update</button>
+      <button type="submit" id="edit">
+        {loading ? <Spinner /> : "Update"}
+      </button>
     </form>
   );
 }
