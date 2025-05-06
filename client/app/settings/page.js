@@ -4,6 +4,7 @@ import PrivateRoute from "../components/PrivateRoute";
 import "./page.css";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
+import Spinner from "../components/Spinner";
 
 export default function Settings() {
   const { data: session, status } = useSession();
@@ -14,26 +15,43 @@ export default function Settings() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
+  const [isUsernameLoading, setIsUsernameLoading] = useState(false);
+  const [isPasswordLoading, setIsPasswordLoading] = useState(false);
+  const [originalFirstName, setOriginalFirstName] = useState("");
+  const [originalLastName, setOriginalLastName] = useState("");
 
   const userId = session?.user?.id;
 
   //prepopulate firstname and lastname fields
   useEffect(() => {
     if (session?.user) {
-      setFirstName(session.user.firstname || "");
-      setLastName(session.user.lastname || "");
+      console.log("Session user:", session.user);
+      const fName = session.user.firstname || "";
+      const lName = session.user.lastname || "";
+      setFirstName(fName);
+      setLastName(lName);
+      setOriginalFirstName(fName);
+      setOriginalLastName(lName);
     }
   }, [session]);
   //username update logic
   const handleUsernameUpdate = async (e) => {
     e.preventDefault();
 
+    if (
+      firstName.trim() === originalFirstName.trim() &&
+      lastName.trim() === originalLastName.trim()
+    ) {
+      toast("No changes detected");
+      return;
+    }
     if (status !== "authenticated" || !session?.user?.accessToken) {
       toast.error("Not authorized. Please log in again.");
       return;
     }
+
+    setIsUsernameLoading(true);
     try {
-      
       const res = await fetch(`${baseURL}/change-username`, {
         method: "PATCH",
         headers: {
@@ -46,10 +64,12 @@ export default function Settings() {
       if (!res.ok) {
         throw new Error("Failed to update username");
       }
-      toast.success("Username updated successfully");
+      toast.success("Username updated successfully. Log out to see changes");
     } catch (error) {
       console.error("Failed to update username");
       toast.error("Failed! Please try again");
+    } finally {
+      setIsUsernameLoading(false);
     }
   };
   //password update logic
@@ -58,8 +78,10 @@ export default function Settings() {
 
     if (newPassword !== confirmPassword) {
       toast.error("Passwords do not match");
+      return;
     }
 
+    setIsPasswordLoading(true);
     try {
       const res = await fetch(`${baseURL}/change-password`, {
         method: "PATCH",
@@ -73,17 +95,24 @@ export default function Settings() {
         }),
       });
 
+      if (res.status === 401) {
+        toast.error("Old password is incorrect");
+        return;
+      }
+
       if (!res.ok) {
         throw new Error("Failed to change password");
       }
       toast.success("Password changed successfully");
+      setOldPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
     } catch (error) {
       console.error("Failed to change password");
       toast.error("Failed! Please try again");
+    } finally {
+      setIsPasswordLoading(false);
     }
-    setOldPassword("")
-    setNewPassword("")
-    setConfirmPassword("")
   };
   return (
     <PrivateRoute>
@@ -110,7 +139,9 @@ export default function Settings() {
                 onChange={(e) => setLastName(e.target.value)}
               />
             </div>
-            <button type="submit">Update</button>
+            <button type="submit" disabled={isUsernameLoading}>
+              {isUsernameLoading ? "Loading..." : "Update"}
+            </button>
           </form>
         </div>
         <div className="password-container settings-div">
@@ -147,7 +178,9 @@ export default function Settings() {
                 required
               />
             </div>
-            <button type="submit">Change</button>
+            <button type="submit" disabled={isPasswordLoading}>
+              {isPasswordLoading ? "Loading..." : "Change"}
+            </button>
           </form>
         </div>
       </section>
