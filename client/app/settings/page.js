@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 export default function Settings() {
   const { data: session, status } = useSession();
+  const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -14,6 +15,7 @@ export default function Settings() {
   const [oldPassword, setOldPassword] = useState("");
 
   const userId = session?.user?.id;
+
   //prepopulate firstname and lastname fields
   useEffect(() => {
     if (session?.user) {
@@ -25,10 +27,18 @@ export default function Settings() {
   const handleUsernameUpdate = async (e) => {
     e.preventDefault();
 
+    if (status !== "authenticated" || !session?.user?.accessToken) {
+      toast.error("Not authorized. Please log in again.");
+      return;
+    }
     try {
-      const res = await fetch(`http://localhost:3001/users/${userId}`, {
+      
+      const res = await fetch(`${baseURL}/change-username`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.user.accessToken}`, //send token
+        },
         body: JSON.stringify({ firstname: firstName, lastname: lastName }),
       });
 
@@ -50,12 +60,15 @@ export default function Settings() {
     }
 
     try {
-      const res = await fetch(`http://localhost:3001/users/${userId}`, {
+      const res = await fetch(`${baseURL}/change-password`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.user.accessToken}`, //send token
+        },
         body: JSON.stringify({
           old_password: oldPassword,
-          new_password: newPassword
+          new_password: newPassword,
         }),
       });
 

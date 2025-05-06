@@ -7,7 +7,7 @@ const handler = NextAuth({
   providers: [
     CredentialsProvider({
       async authorize(credentials) {
-        try{
+        try {
           const res = await fetch(`${baseURL}/signin`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -16,23 +16,24 @@ const handler = NextAuth({
               password: credentials.password,
             }),
           });
-  
+
           const user = await res.json();
-  
+
           if (!res.ok) {
             throw new Error(user.error || "Login Failed");
           }
-  
+
           return {
             id: user.id,
             firstname: user.firstname,
             lastname: user.lastname,
             email: user.email,
             name: `${user.firstname} ${user.lastname}`,
+            accessToken: user["access token"],
           };
-        }catch(error){
+        } catch (error) {
           console.error("Auth error: ", error.message);
-          return null
+          return null;
         }
       },
     }),
@@ -44,6 +45,7 @@ const handler = NextAuth({
         token.firstname = user.firstname;
         token.lastname = user.lastname;
         token.email = user.email;
+        token.accessToken = user.accessToken;
       }
       return token;
     },
@@ -52,6 +54,7 @@ const handler = NextAuth({
       session.user.firstname = token.firstname;
       session.user.lastname = token.lastname;
       session.user.email = token.email;
+      session.user.accessToken = token.accessToken;
       return session;
     },
   },

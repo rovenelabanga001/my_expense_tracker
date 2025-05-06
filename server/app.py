@@ -2,6 +2,7 @@
 #/usr/bin/env python3
 
 import os
+from dotenv import load_dotenv
 from flask import Flask, jsonify, request, make_response
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended import create_access_token
@@ -92,10 +93,15 @@ class Signin(Resource):
         if not user or not check_password_hash(user.password, password):
             return{"error" : "Invalid email or password"}, 401
 
-        # user_data = user.to_dict()
-        # user_data.pop("password", None)
         access_token = create_access_token(identity=user.id)
-        return make_response({"access token": access_token}, 200)
+
+        user_data = user.to_dict()
+        user_data.pop("password", None)
+
+        return make_response({
+            "access token": access_token,
+            **user_data
+        }, 200)
 
 api.add_resource(Signin, "/signin")
 
@@ -125,7 +131,7 @@ class ChangeUsername(Resource):
 api.add_resource(ChangeUsername, "/change-username")
 
 class ChangePassword(Resource):
-    @jwt_required
+    @jwt_required()
     def patch(self):
         user_id = get_jwt_identity()
         data = request.get_json()

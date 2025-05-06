@@ -24,7 +24,6 @@ export default function Dashboard() {
   const [totalAmount, setTotalAmount] = useState(0);
 
   const { data: session, status } = useSession();
-  const userId = session.user.id;
 
   const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -35,81 +34,99 @@ export default function Dashboard() {
     }
   }, [status, session]);
 
+  useEffect(
+    () => {
+      if (status !== "authenticated" && session?.user?.id) {
+        const userId = session.user.id;
+      }
+    },
+    [status],
+    [session]
+  );
+
   //fetch transactions
   useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+    if (status === "authenticated" && session?.user?.id) {
+      const userId = session.user.id;
+      const fetchTransactions = async () => {
+        try {
+          setLoading(true);
+          setError(null);
 
-        const response = await fetch(`${baseURL}/users/${userId}/transactions`);
+          const response = await fetch(
+            `${baseURL}/users/${userId}/transactions`
+          );
 
-        if (!response.ok) {
-          throw new Error(`HTTP Error! Status: ${response.status}`);
+          if (!response.ok) {
+            throw new Error(`HTTP Error! Status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          setTransactions(data);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
         }
+      };
 
-        const data = await response.json();
-        setTransactions(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTransactions();
-  }, []);
+      fetchTransactions();
+    }
+  }, [status, session]);
 
   //fetch reminders
   useEffect(() => {
-    const fetchReminders = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+    if (status === "authenticated" && session?.user?.id) {
+      const userId = session.user.id;
+      const fetchReminders = async () => {
+        try {
+          setLoading(true);
+          setError(null);
 
-        const response = await fetch("http://localhost:3001/reminders");
+          const response = await fetch(`${baseURL}/users/${userId}/reminders`);
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          const today = new Date();
+
+          //Get today's date, tommorow and the day after tommorrow
+          const nextThreeDays = [0, 1, 2].map((offset) => {
+            const date = new Date();
+            date.setDate(today.getDate() + offset);
+            return date.toISOString().split("T")[0]; //Format YYYY-MM-DD
+          });
+
+          //Filter reminders for today, tomorrow and the day after tomorrow
+          const upcomingReminders = data.filter((reminder) => {
+            return nextThreeDays.includes(reminder.date);
+          });
+
+          //If there are no reminders for today, tomorrow or the day after tomorrow, get the three closest reminders
+          if (upcomingReminders.length === 0) {
+            const closestReminder = data
+              .sort(
+                (a, b) =>
+                  Math.abs(new Date(a.date) - today) -
+                  Math.abs(new Date(b.date) - today)
+              ) //sort by approximity to today
+              .slice(0, 3); // Get the three closest reminders
+
+            setReminders(closestReminder);
+          } else {
+            setReminders(upcomingReminders);
+          }
+        } catch (error) {
+          console.error("Error fetching reminders:", error);
+        } finally {
+          setLoading(false);
         }
-
-        const data = await response.json();
-        const today = new Date();
-
-        //Get today's date, tommorow and the day after tommorrow
-        const nextThreeDays = [0, 1, 2].map((offset) => {
-          const date = new Date();
-          date.setDate(today.getDate() + offset);
-          return date.toISOString().split("T")[0]; //Format YYYY-MM-DD
-        });
-
-        //Filter reminders for today, tomorrow and the day after tomorrow
-        const upcomingReminders = data.filter((reminder) => {
-          return nextThreeDays.includes(reminder.date);
-        });
-
-        //If there are no reminders for today, tomorrow or the day after tomorrow, get the three closest reminders
-        if (upcomingReminders.length === 0) {
-          const closestReminder = data
-            .sort(
-              (a, b) =>
-                Math.abs(new Date(a.date) - today) -
-                Math.abs(new Date(b.date) - today)
-            ) //sort by approximity to today
-            .slice(0, 3); // Get the three closest reminders
-
-          setReminders(closestReminder);
-        } else {
-          setReminders(upcomingReminders);
-        }
-      } catch (error) {
-        console.error("Error fetching reminders:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchReminders();
-  }, []);
+      };
+      fetchReminders();
+    }
+  }, [status, session]);
 
   const toggleReminder = (id) => {
     setSelected((prev) => ({
@@ -227,9 +244,6 @@ export default function Dashboard() {
               <IoIosNotifications />
               <p>Reminders</p>
             </div>
-            <button>
-              <FaPlus />
-            </button>
           </div>
           <div className="shortcut-body">
             <div className="reminders-container">
@@ -238,18 +252,7 @@ export default function Dashboard() {
                   <div key={reminder.id} className="reminder-info">
                     <h2>{new Date(reminder.date).toDateString()}</h2>
                     <div className="reminder-item">
-                      <input
-                        type="checkbox"
-                        onChange={() => toggleReminder(reminder.id)}
-                        checked={selected[reminder.id] || false}
-                      />
-                      <p
-                        style={{
-                          textDecoration: selected[reminder.id]
-                            ? "line-through"
-                            : "none",
-                        }}
-                      >
+                      <p>
                         {reminder.name} - {reminder.time}
                       </p>
                     </div>
@@ -304,35 +307,6 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        {/* <div className="shortcuts widget">
-          <div className="reminders-heading">
-            <div className="svg-container">
-              <AiFillSchedule />
-              <p>Budgets</p>
-            </div>
-            <button>
-              <FaPlus />
-            </button>
-          </div>
-          <div className="shortcut-body">
-            <div className="transactions-info">
-              <div className="transaction-heading">
-                <h2>Today 11 March</h2>
-              </div>
-              <div className="transaction-body">
-                <div className="description">
-                  <h5>
-                    Electricity Bill{" "}
-                    <span>
-                      <p>Active</p>
-                    </span>
-                  </h5>
-                </div>
-                <h5>50.00</h5>
-              </div>
-            </div>
-          </div>
-        </div> */}
       </div>
     </section>
   );
