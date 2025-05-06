@@ -4,6 +4,7 @@ import PrivateRoute from "../components/PrivateRoute";
 import "./page.css";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
+
 export default function Settings() {
   const { data: session, status } = useSession();
   const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -80,6 +81,9 @@ export default function Settings() {
       console.error("Failed to change password");
       toast.error("Failed! Please try again");
     }
+    setOldPassword("")
+    setNewPassword("")
+    setConfirmPassword("")
   };
   return (
     <PrivateRoute>

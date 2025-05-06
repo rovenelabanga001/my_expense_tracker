@@ -44,87 +44,64 @@ export default function Dashboard() {
     [session]
   );
 
-  //fetch transactions
+  //fetch reminders and transactions
   useEffect(() => {
     if (status === "authenticated" && session?.user?.id) {
       const userId = session.user.id;
-      const fetchTransactions = async () => {
+
+      const fetchUserData = async (endpoint) => {
+        const res = await fetch(`${baseURL}/users/${userId}/${endpoint}`);
+        if (!res.ok) {
+          throw new Error(`Failed to fetch ${endpoint}: ${res.status}`);
+        }
+
+        return res.json();
+      };
+
+      const fetchAllData = async () => {
         try {
           setLoading(true);
           setError(null);
 
-          const response = await fetch(
-            `${baseURL}/users/${userId}/transactions`
+          //fetch transactions
+          const transactionData = await fetchUserData("transactions");
+          setTransactions(transactionData);
+
+          //fetch reminders
+          const reminderData = await fetchUserData("reminders");
+          setReminders(reminderData);
+
+          const today = new Date();
+          const nextThreeDays = [0, 1, 2].map((offset) => {
+            const date = new Date();
+            date.setDate(today.getDate() + offset);
+            return date.toISOString().split("T")[0];
+          });
+
+          const upcomingReminders = remindersData.filter((reminder) =>
+            nextThreeDays.includes(reminder.date)
           );
 
-          if (!response.ok) {
-            throw new Error(`HTTP Error! Status: ${response.status}`);
-          }
+          if (upcomingReminders.length === 0) {
+            const closestReminders = remindersData
+              .sort(
+                (a, b) =>
+                  Math.abs(new Date(a.date) - today) -
+                  Math.abs(new Date(b.date) - today)
+              )
+              .slice(0, 3);
 
-          const data = await response.json();
-          setTransactions(data);
+            setReminders(closestReminders);
+          } else {
+            setReminders(upcomingReminders);
+          }
         } catch (err) {
           setError(err.message);
         } finally {
           setLoading(false);
         }
       };
-
-      fetchTransactions();
-    }
-  }, [status, session]);
-
-  //fetch reminders
-  useEffect(() => {
-    if (status === "authenticated" && session?.user?.id) {
-      const userId = session.user.id;
-      const fetchReminders = async () => {
-        try {
-          setLoading(true);
-          setError(null);
-
-          const response = await fetch(`${baseURL}/users/${userId}/reminders`);
-
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-
-          const data = await response.json();
-          const today = new Date();
-
-          //Get today's date, tommorow and the day after tommorrow
-          const nextThreeDays = [0, 1, 2].map((offset) => {
-            const date = new Date();
-            date.setDate(today.getDate() + offset);
-            return date.toISOString().split("T")[0]; //Format YYYY-MM-DD
-          });
-
-          //Filter reminders for today, tomorrow and the day after tomorrow
-          const upcomingReminders = data.filter((reminder) => {
-            return nextThreeDays.includes(reminder.date);
-          });
-
-          //If there are no reminders for today, tomorrow or the day after tomorrow, get the three closest reminders
-          if (upcomingReminders.length === 0) {
-            const closestReminder = data
-              .sort(
-                (a, b) =>
-                  Math.abs(new Date(a.date) - today) -
-                  Math.abs(new Date(b.date) - today)
-              ) //sort by approximity to today
-              .slice(0, 3); // Get the three closest reminders
-
-            setReminders(closestReminder);
-          } else {
-            setReminders(upcomingReminders);
-          }
-        } catch (error) {
-          console.error("Error fetching reminders:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchReminders();
+      fetchAllData();
     }
   }, [status, session]);
 

@@ -3,15 +3,16 @@
 
 import os
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request, make_response
-from flask_jwt_extended import JWTManager
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import jwt_required, get_jwt_identity #auth decorator for protected routes
+from flask import Flask, jsonify, request, make_response, request
+from flask_jwt_extended import (
+    JWTManager, create_access_token, create_refresh_token, jwt_required, 
+    get_jwt_identity, jwt_required
+)
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_restful import Api, Resource
 from flask_cors import CORS
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil.parser import isoparse
 
 from models import db, User, Transaction, Budget, Reminder
@@ -20,6 +21,8 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
 app.json.compact = True
 jwt = JWTManager(app)
 
@@ -94,12 +97,14 @@ class Signin(Resource):
             return{"error" : "Invalid email or password"}, 401
 
         access_token = create_access_token(identity=user.id)
+        refresh_token = create_refresh_token(identity=user.id)
 
         user_data = user.to_dict()
         user_data.pop("password", None)
 
         return make_response({
             "access token": access_token,
+            "refresh token": refresh_token,
             **user_data
         }, 200)
 
@@ -153,6 +158,15 @@ class ChangePassword(Resource):
         return {"message" : "Password changed successfully"} ,200
 api.add_resource(ChangePassword, "/change-password")
 
+class TokenRefresh(Resource):
+    @jwt_required(refresh=True)
+    def post(self):
+        print("Authorization header:", request.headers.get("Authorization"))
+
+        user_id = get_jwt_identity()
+        new_access_token = create_access_token(identity=user_id)
+        return {"access token": new_access_token}, 200
+api.add_resource(TokenRefresh, "/refresh")
 #get/post transactions
 class Transactions(Resource):
     def get(self):
