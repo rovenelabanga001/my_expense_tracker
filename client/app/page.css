@@ -233,7 +233,6 @@ textarea {
   }
 }
 
-/* Small devices (≥ 576px and < 768px) */
 @media (max-width: 576px) {
   .nav-links,
   .nav-buttons {
@@ -341,12 +340,3 @@ textarea {
   }
 }
 
-/* Optional: Portrait */
-@media (max-width: 400px) {
-  /* Styles for portrait orientation */
-}
-
-/* Optional: Landscape */
-@media (max-width: 320px) {
-  /* Styles for landscape orientation */
-}
