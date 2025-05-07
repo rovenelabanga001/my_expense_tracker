@@ -3,6 +3,7 @@ import "./page.css";
 import { useEffect, useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import { TiTick } from "react-icons/ti";
+import { RxHamburgerMenu } from "react-icons/rx";
 import features from "@/public/features";
 import { useRouter } from "next/navigation";
 
@@ -11,6 +12,7 @@ export default function Home() {
   const [showPopUp, setShowPopUp] = useState(false);
   const [showError, setShowError] = useState(false);
   const [activeLink, setActiveLink] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const router = useRouter();
 
@@ -93,7 +95,8 @@ export default function Home() {
           <div className="logo-container">
             <h1>LOGO</h1>
           </div>
-          <div className="nav-links">
+
+          <div className="nav-links desktop-only">
             <ul>
               <li>
                 <a
@@ -124,13 +127,66 @@ export default function Home() {
               </li>
             </ul>
           </div>
-          <div className="nav-buttons">
+          <div className="nav-buttons desktop-only">
             <button className="log-btn" onClick={() => openInNewTab("/signin")}>
               Sign In
             </button>
             <button className="log-btn" onClick={() => openInNewTab("/signup")}>
               Sign Up
             </button>
+          </div>
+          <div className={`mobile-menu ${isMenuOpen ? "open" : ""}`}>
+            <div className="nav-links">
+              <ul>
+                <li>
+                  <a
+                    href="#introduction"
+                    className={activeLink === "introduction" ? "active" : ""}
+                    onClick={(e) => handleLinkClick(e, "introduction")}
+                  >
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#features"
+                    className={activeLink === "features" ? "active" : ""}
+                    onClick={(e) => handleLinkClick(e, "features")}
+                  >
+                    About Us
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#contact-us"
+                    className={activeLink === "contact-us" ? "active" : ""}
+                    onClick={(e) => handleLinkClick(e, "contact-us")}
+                  >
+                    Contact Us
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className="nav-buttons">
+              <button
+                className="log-btn"
+                onClick={() => openInNewTab("/signin")}
+              >
+                Sign In
+              </button>
+              <button
+                className="log-btn"
+                onClick={() => openInNewTab("/signup")}
+              >
+                Sign Up
+              </button>
+            </div>
+          </div>
+          <div
+            className="menu-toggle"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <RxHamburgerMenu />
           </div>
         </nav>
       </header>

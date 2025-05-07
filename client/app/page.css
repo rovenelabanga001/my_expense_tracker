@@ -31,8 +31,8 @@ nav .nav-links ul a {
   font-size: 15px;
   transition: color 0.3s;
 }
-nav .nav-links ul a.active{
-    color: rgb(240, 43, 240);
+nav .nav-links ul a.active {
+  color: rgb(240, 43, 240);
 }
 nav .nav-buttons {
   display: flex;
@@ -53,6 +53,32 @@ button.log-btn:hover {
   background: white;
   color: rgb(19, 1, 63);
   border: rgb(19, 1, 63) solid;
+}
+.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: rgb(19, 1, 63);
+}
+.mobile-menu {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 250px;
+  height: 100vh;
+  background: white;
+  transition: right 0.3s ease-in-out;
+  padding: 2rem 1rem;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 1200;
+}
+.mobile-menu.open {
+  right: 0;
+}
+.desktop-only {
+  display: flex;
 }
 .body {
   padding: 100px;
@@ -182,4 +208,145 @@ textarea {
 .sent-popup.error {
   background-color: #f8d7da;
   color: #721c24;
+}
+
+/* Extra Extra Large devices (≥ 1400px) */
+@media (min-width: 1400px) {
+  /* Styles for ultra-wide screens */
+}
+
+/* Extra Large devices (≥ 1200px and < 1400px) */
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+  /* Styles for large desktops */
+}
+
+/* Large devices (≥ 992px and < 1200px) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  /* Styles for desktops and laptops */
+}
+
+/* Medium devices (≥ 768px and < 992px) */
+@media (max-width: 991.98px) {
+  .features .features-body {
+    flex-direction: column;
+    row-gap: 50px;
+  }
+}
+
+/* Small devices (≥ 576px and < 768px) */
+@media (max-width: 576px) {
+  .nav-links,
+  .nav-buttons {
+    display: none;
+  }
+  .desktop-only {
+    display: hidden;
+  }
+
+  .menu-toggle {
+    display: block;
+    z-index: 1300;
+    cursor: pointer;
+  }
+
+  nav {
+    justify-content: space-between;
+    padding: 0 1rem;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    height: 100vh;
+    width: 60%;
+    background-color: white;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 2rem;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease-in-out;
+    z-index: 1200;
+  }
+
+  .mobile-menu.open {
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mobile-menu .nav-links {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+  .mobile-menu .nav-buttons {
+    display: none;
+  }
+  .mobile-menu ul {
+    flex-direction: column;
+    row-gap: 1.5rem;
+  }
+
+  .mobile-menu a {
+    font-size: 15px; /* Fixed typo: 15x → 15px */
+    color: rgb(19, 1, 63);
+  }
+
+  button.log-btn {
+    width: 100px;
+    height: 35px;
+    font-size: 12px;
+  }
+
+  /* Contact form responsiveness */
+  .contact-us form {
+    width: 100%;
+  }
+
+  .contact-us form input,
+  textarea {
+    width: 100%;
+  }
+
+  .contact-us form button {
+    width: 80px;
+    height: 30px;
+    padding: 10px;
+  }
+}
+@media (max-width: 480px) {
+  /* Styles for small phones */
+  .div-padding {
+    padding: 40px 30px 30px;
+    width: 100%;
+}
+  .introduction h2 {
+    font-size: 5vh;
+  }
+  .div-paragraph {
+    line-height: 20px;
+    font-weight: 300;
+  }
+  .contact-us form {
+    width: 100%;
+  }
+  .contact-us form input,
+  textarea {
+    width: 100%;
+  }
+}
+
+/* Optional: Portrait */
+@media (max-width: 400px) {
+  /* Styles for portrait orientation */
+}
+
+/* Optional: Landscape */
+@media (max-width: 320px) {
+  /* Styles for landscape orientation */
 }
