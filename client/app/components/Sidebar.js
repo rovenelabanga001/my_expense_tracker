@@ -7,12 +7,15 @@ import { GiMoneyStack } from "react-icons/gi";
 import { AiFillSchedule } from "react-icons/ai";
 import { IoIosNotifications } from "react-icons/io";
 import { IoSettings } from "react-icons/io5";
+import { MdMenu } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
 import { signOut } from "next-auth/react";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const handleLogOut = () => {
     toast(
@@ -58,7 +61,12 @@ export default function Sidebar() {
     );
   };
   return (
-    <div className="sidebar">
+    <>
+    {/* Hamburger for mobile */}
+    <button className="hamburger" onClick={() => setSidebarOpen(!sidebarOpen)}>
+      <MdMenu/>
+    </button>
+    <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
       <div className="user"></div>
       <ul className="nav-links">
         <li>
@@ -114,5 +122,6 @@ export default function Sidebar() {
         </li>
       </ul>
     </div>
+    </>
   );
 }

@@ -153,7 +153,8 @@ class ChangePassword(Resource):
             return {"error" : "User not found"}, 404
 
         if not check_password_hash(user.password, old_password):
-            return {"error" : "Old password is incorrect"}, 401
+            return {"error" : "Old password is incorrect"}, 401     
+            
 
         user.password = generate_password_hash(new_password)
         db.session.commit()

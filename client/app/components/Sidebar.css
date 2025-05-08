@@ -61,3 +61,31 @@
   justify-content: center;
   align-items: center;
 }
+@media (max-width: 768px) {
+  .sidebar {
+    left: -100%;
+    transition: left 0.3s ease-in-out;
+    z-index: 1000;
+  }
+  .sidebar.open {
+    left: 0;
+  }
+  .hamburger {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    color: rgb(19, 1, 63);
+    z-index: 2000;
+    cursor: pointer;
+    display: block;
+  }
+}
+
+@media (min-width: 769px) {
+  .hamburger {
+    display: none;
+  }
+}
