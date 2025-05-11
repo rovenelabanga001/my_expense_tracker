@@ -1,6 +1,6 @@
 .sidebar {
   width: 150px;
-  height: 100vh;
+  height: 100%;
   position: fixed;
   left: 0;
   top: 0;
@@ -8,6 +8,16 @@
   color: white;
   display: flex;
   flex-direction: column;
+}
+.close {
+  background: none;
+  color: white;
+  font-size: 2rem;
+  border: none;
+  outline: none;
+  position: fixed;
+  left: 0.5rem;
+  top: 1rem;
 }
 .nav-links {
   display: flex;
@@ -73,7 +83,7 @@
   .hamburger {
     position: fixed;
     top: 1rem;
-    left: 1rem;
+    left: 0.5rem;
     font-size: 2rem;
     background: none;
     border: none;
@@ -85,7 +95,8 @@
 }
 
 @media (min-width: 769px) {
-  .hamburger {
+  .hamburger,
+  .close {
     display: none;
   }
 }

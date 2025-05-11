@@ -182,12 +182,29 @@
   justify-content: space-between;
   font-size: 12px;
 }
-/* .shortcut-body .transactions-info .transaction-body .description {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-} */
+
 .shortcut-body .transactions-info .transaction-body .description p {
   color: red;
   font-size: 8px;
+}
+
+@media (max-width: 768px) {
+  .dashboard-section {
+    padding: 50px 30px 30px 50px;
+    width: 100%;
+  }
+  .widgets-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .widget {
+    padding: 0 20px 0 10px;
+    width: 70%;
+    border-radius: 15px;
+    background: #13013f;
+  }
 }

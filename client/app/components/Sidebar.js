@@ -8,6 +8,7 @@ import { AiFillSchedule } from "react-icons/ai";
 import { IoIosNotifications } from "react-icons/io";
 import { IoSettings } from "react-icons/io5";
 import { MdMenu } from "react-icons/md";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 import { CiLogout } from "react-icons/ci";
 import { signOut } from "next-auth/react";
 import toast from "react-hot-toast";
@@ -15,7 +16,7 @@ import { useState } from "react";
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogOut = () => {
     toast(
@@ -62,66 +63,72 @@ export default function Sidebar() {
   };
   return (
     <>
-    {/* Hamburger for mobile */}
-    <button className="hamburger" onClick={() => setSidebarOpen(!sidebarOpen)}>
-      <MdMenu/>
-    </button>
-    <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-      <div className="user"></div>
-      <ul className="nav-links">
-        <li>
-          <Link
-            href="/dashboard"
-            className={pathname === "/dashboard" ? "active" : ""}
-          >
-            <MdSpaceDashboard />
-            <p>Dashboard</p>
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/transactions"
-            className={pathname === "/transactions" ? "active" : ""}
-          >
-            <GiMoneyStack />
-            <p>Transactions</p>
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/budgets"
-            className={pathname === "/budgets" ? "active" : ""}
-          >
-            <AiFillSchedule />
-            <p>Budgets</p>
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/reminders"
-            className={pathname === "/reminders" ? "active" : ""}
-          >
-            <IoIosNotifications />
-            <p>Reminders</p>
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/settings"
-            className={pathname === "/settings" ? "active" : ""}
-          >
-            <IoSettings />
-            <p>Settings</p>
-          </Link>
-        </li>
-        <li>
-          <button onClick={handleLogOut}>
-            <CiLogout />
-            Logout
-          </button>
-        </li>
-      </ul>
-    </div>
+      {/* Hamburger for mobile */}
+      <button
+        className="hamburger"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+      >
+        <MdMenu />
+      </button>
+      <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
+        <div className="user"></div>
+        <button className="close" onClick={() => setSidebarOpen(false)}>
+        <IoIosCloseCircleOutline />
+        </button>
+        <ul className="nav-links">
+          <li>
+            <Link
+              href="/dashboard"
+              className={pathname === "/dashboard" ? "active" : ""}
+            >
+              <MdSpaceDashboard />
+              <p>Dashboard</p>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/transactions"
+              className={pathname === "/transactions" ? "active" : ""}
+            >
+              <GiMoneyStack />
+              <p>Transactions</p>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/budgets"
+              className={pathname === "/budgets" ? "active" : ""}
+            >
+              <AiFillSchedule />
+              <p>Budgets</p>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/reminders"
+              className={pathname === "/reminders" ? "active" : ""}
+            >
+              <IoIosNotifications />
+              <p>Reminders</p>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/settings"
+              className={pathname === "/settings" ? "active" : ""}
+            >
+              <IoSettings />
+              <p>Settings</p>
+            </Link>
+          </li>
+          <li>
+            <button onClick={handleLogOut}>
+              <CiLogout />
+              Logout
+            </button>
+          </li>
+        </ul>
+      </div>
     </>
   );
 }
