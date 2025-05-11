@@ -187,6 +187,21 @@
   color: red;
   font-size: 8px;
 }
+@media (min-width: 769px) and (max-width: 991.98px) {
+  .dashboard-section .reminder-section {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .widgets-container {
+    gap: 20px;
+  }
+  .widget {
+    width: 80%;
+  }
+  .shortcuts {
+    width: 80%;
+  }
+}
 
 @media (max-width: 768px) {
   .dashboard-section {

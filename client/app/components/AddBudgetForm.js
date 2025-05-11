@@ -35,7 +35,6 @@ export default function AddBudgetForm({ onClose, onAddBudget, userId, baseURL })
       user_id: userId
     };
 
-    console.log(newBudget)
 
     try {
       const response = await fetch(`${baseURL}/budgets`, {

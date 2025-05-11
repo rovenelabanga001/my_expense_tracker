@@ -160,7 +160,6 @@
     padding: 50px 30px 30px 50px;
   }
   @media (min-width: 576px) and (max-width: 767.98px) {
-    /* Styles for large phones and landscape phones */
   }
   @media (max-width: 575.98px) {
     .transactions-page {

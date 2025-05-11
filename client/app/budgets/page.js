@@ -73,7 +73,6 @@ export default function Budgets() {
 
       const updatedBudget = await response.json();
 
-      console.log("Updated budget", updatedBudget);
       setBudgets((prevBudgets) =>
         prevBudgets.map((budget) =>
           budget.id === id
@@ -197,9 +196,6 @@ export default function Budgets() {
                   <div className="card-buttons-container">
                     <button onClick={() => handleDelete(budget.id)}>
                       <MdDelete />
-                    </button>
-                    <button>
-                      <IoMdInformationCircleOutline />
                     </button>
                   </div>
                 </div>

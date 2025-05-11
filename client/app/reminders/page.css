@@ -152,7 +152,7 @@
   font-size: 1rem;
   color: #555;
 }
-.no-reminders{
+.no-reminders {
   margin: auto;
   padding-top: 30vh;
 }
@@ -160,5 +160,33 @@
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+@media (max-width: 1199.98px) {
+  .filter-buttons button {
+    width: 80px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .search-reminder {
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+  .filter-buttons button {
+    width: 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .reminders-section {
+    padding: 50px 30px 30px 50px;
+  }
+}
+
+@media (max-width: 359.98px) {
+  .search-reminder-input {
+    width: 50%;
+    gap: 20px;
   }
 }

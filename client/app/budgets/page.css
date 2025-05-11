@@ -180,9 +180,50 @@ input:checked + .slider:before {
   font-size: 30px;
   color: white;
 }
-.card-buttons-container button{
+.card-buttons-container button {
   cursor: pointer;
 }
-.card-buttons-container button svg{
-font-size: 15px;
+.card-buttons-container button svg {
+  font-size: 15px;
+}
+
+@media (max-width: 768px) {
+  .budgets-page {
+    padding: 50px 30px 30px 50px;
+  }
+  @media (min-width: 576px) and (max-width: 767.98px) {
+    .search-input-container input {
+      width: 80%;
+    }
+  }
+  @media (max-width: 575.98px) {
+    .search-container {
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      column-gap: 40px;
+      row-gap: 20px;
+    }
+    .search-input-container {
+      width: 50%;
+    }
+    .search-container .buttons-container button {
+      width: 70px;
+      border-radius: 20px;
+      font-size: 13px;
+    }
+    .budget-cards-container {
+      gap: 30px 50px;
+    }
+  }
+  @media (max-width: 479.98px) {
+    .budget-cards-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+    .budget-card {
+      width: 80%;
+    }
+  }
 }
