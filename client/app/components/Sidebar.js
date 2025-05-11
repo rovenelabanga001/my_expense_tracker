@@ -8,7 +8,7 @@ import { AiFillSchedule } from "react-icons/ai";
 import { IoIosNotifications } from "react-icons/io";
 import { IoSettings } from "react-icons/io5";
 import { MdMenu } from "react-icons/md";
-import { IoIosCloseCircleOutline } from "react-icons/io";
+import { IoIosClose } from "react-icons/io";
 import { CiLogout } from "react-icons/ci";
 import { signOut } from "next-auth/react";
 import toast from "react-hot-toast";
@@ -73,7 +73,7 @@ export default function Sidebar() {
       <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
         <div className="user"></div>
         <button className="close" onClick={() => setSidebarOpen(false)}>
-        <IoIosCloseCircleOutline />
+          <IoIosClose />
         </button>
         <ul className="nav-links">
           <li>

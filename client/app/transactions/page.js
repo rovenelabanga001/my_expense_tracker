@@ -74,7 +74,8 @@ export default function Transactions() {
   const filteredTransactions = transactions.filter((t) => {
     const matchesSearch =
       t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (typeof t.type === "string" &&
+        t.type.toLowerCase().includes(searchQuery.toLowerCase())) ||
       t.amount.toString().includes(searchQuery);
 
     const matchesType =
@@ -124,7 +125,6 @@ export default function Transactions() {
       <div className="page-header">
         <h1>My Transactions</h1>
         <h5>
-          Today,{" "}
           {new Date().toLocaleDateString("en-GB", {
             day: "numeric",
             month: "long",
