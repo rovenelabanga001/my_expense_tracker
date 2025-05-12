@@ -99,6 +99,17 @@ export default function EditBudgetForm({ budget, onClose, onUpdate, baseURL }) {
         />
       </div>
       <div>
+        <label className="date-label">Spent Amount:</label>
+        <input
+          name="spent_amount"
+          type="number"
+          value={formData.spent_amount}
+          onChange={handleChange}
+          placeholder="Spent Amount"
+          required
+        />
+      </div>
+      <div>
         <label className="date-label">Start Date:</label>
         <input
           type="date"
