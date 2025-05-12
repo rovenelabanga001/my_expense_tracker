@@ -50,11 +50,11 @@ export default function EditReminderForm({
         throw new Error("Failed to update reminder");
       }
 
-      const updatedBudget = await res.json();
-      onUpdate(updatedBudget);
+      const updatedReminder = await res.json();
+      onUpdate(updatedReminder);
       onClose();
     } catch (error) {
-      console.error("Failed to update budget", error);
+      console.error("Failed to update reminder", error);
       toast.error("Failed! Please try again");
     } finally {
       setLoading(false);

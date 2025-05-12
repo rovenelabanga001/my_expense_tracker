@@ -1,6 +1,6 @@
 "use client";
 import "./page.css";
-import { IoMdInformationCircleOutline } from "react-icons/io";
+import { MdModeEditOutline } from "react-icons/md";
 import { FaPlus } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import PrivateRoute from "../components/PrivateRoute";
@@ -10,6 +10,7 @@ import AddBudgetForm from "../components/AddBudgetForm";
 import Noresults from "../components/Noresults";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
+import EditBudgetForm from "../components/EditBudgetForm";
 export default function Budgets() {
   const [budgets, setBudgets] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -55,6 +56,11 @@ export default function Budgets() {
   const handleAddBudget = (newBudget) => {
     setBudgets((prevBudgets) => [...prevBudgets, newBudget]);
   };
+
+  //update budget function
+  const handleUpdateBudget = (updatedBudget) =>{
+    setBudgets((prev) => prev.map((b) => (b.id === updatedBudget.id ? updatedBudget : b)))
+  }
 
   //handle card toggle
   const handleToggleStatus = async (id, currentStatus) => {
@@ -197,6 +203,22 @@ export default function Budgets() {
                     <button onClick={() => handleDelete(budget.id)}>
                       <MdDelete />
                     </button>
+                    <Modal
+                      trigger={
+                        <button>
+                          <MdModeEditOutline />
+                        </button>
+                      }
+                    >
+                      {({ close }) => (
+                        <EditBudgetForm
+                          onClose={close}
+                          budget={budget}
+                          baseURL={baseURL}
+                          onUpdate={handleUpdateBudget}
+                        />
+                      )}
+                    </Modal>
                   </div>
                 </div>
               </div>
