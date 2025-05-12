@@ -46,8 +46,25 @@
   cursor: pointer;
   transition: 0.3s ease-in;
 }
-.settings-div form button:hover{
-    background: white;
+.settings-div form button:hover {
+  background: white;
   color: rgb(19, 1, 63);
   border: 2px solid rgb(19, 1, 63);
+}
+
+@media (max-width: 992px) {
+  .settings-div form button {
+    width: 40%;
+  }
+  .settings-section {
+    padding: 50px 30px 30px 50px;
+  }
+  .settings-div form {
+    width: 80%;
+  }
+}
+@media (max-width: 992px) {
+  .settings-div {
+    width: 80%;
+  }
 }
