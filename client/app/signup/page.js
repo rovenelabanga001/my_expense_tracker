@@ -10,9 +10,8 @@ import { ToastContainer, toast } from "react-toastify";
 import Link from "next/link";
 
 export default function Signup() {
-  
   const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
-  
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -39,26 +38,38 @@ export default function Signup() {
       return;
     }
 
-    const res = await fetch(`${baseURL}/signup`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        firstname: formData.firstName,
-        lastname: formData.lastName,
-        email: formData.email,
-        password: formData.password,
-      }),
-    });
-    if (res.ok) {
-      toast.success("Signup successfull!", {
-        position: "top-center",
-        onClose: () => router.push("/signin"),
-        autoClose: 3000,
+    try {
+      const res = await fetch(`${baseURL}/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstname: formData.firstName,
+          lastname: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+        }),
       });
-    } else {
-      toast.error("Signup failed, Please try again", {
-        position: "top-center",
-      });
+      if (res.ok) {
+        toast.success("Signup successfull!", {
+          position: "top-center",
+          onClose: () => router.push("/signin"),
+          autoClose: 3000,
+        });
+      } else {
+        const errorData = await res.json();
+        if (res.statues === 409) {
+          toast.error("Email already exists!");
+        } else if (errorData?.error) {
+          toast.error(errorData.error);
+        } else {
+          toast.error("Signup failed, Please try again", {
+            position: "top-center",
+          });
+        }
+      }
+    } catch (err) {
+      console.error("Failed, Try again", err);
+      toast.error("Something went wrong, Please try again");
     }
     setLoading(false);
   };

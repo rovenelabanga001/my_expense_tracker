@@ -61,6 +61,10 @@ class Signup(Resource):
         if not all([firstname, lastname, email, password]):
             return {"error" : "All fields are required"}, 400
 
+        existing_user = User.query.filter_by(email=email).first
+        if existing_user:
+            return {"error": "A user with that email already exists"}, 409
+        
         hashed_password = generate_password_hash(password)
 
         new_user = User(
