@@ -18,7 +18,7 @@ from dateutil.parser import isoparse
 from models import db, User, Transaction, Budget, Reminder
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://expense_tracker_db_v96b_user:zsguer3XwR7mDSLjkMyxQziYdn0F62RG@dpg-d0hknlqdbo4c73dsupsg-a.oregon-postgres.render.com/expense_tracker_db_v96b'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)

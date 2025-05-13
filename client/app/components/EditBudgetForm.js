@@ -1,6 +1,7 @@
 import PrivateRoute from "./PrivateRoute";
 import "./BudgetForm.css";
 import { useEffect, useState } from "react";
+import { IoIosClose } from "react-icons/io";
 import toast from "react-hot-toast";
 
 export default function EditBudgetForm({ budget, onClose, onUpdate, baseURL }) {
@@ -55,82 +56,100 @@ export default function EditBudgetForm({ budget, onClose, onUpdate, baseURL }) {
     }
   };
   return (
-    <form className="budget-form" onSubmit={handleSubmit}>
-      <h3>Edit Budget</h3>
-      <div>
-        <label className="date-label">Name:</label>
-        <input
-          name="name"
-          type="text"
-          placeholder="Name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label className="date-label">Category:</label>
-        <select
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          required
-        >
-          <option value="" disabled hidden>
-            Category
-          </option>
-          <option value="Food">Food</option>
-          <option value="Housing">Housing</option>
-          <option value="Transport">Transport</option>
-          <option value="Leisure">Leisure</option>
-          <option value="Healthcare">Healthcare</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-      <div>
-        <label className="date-label">Amount:</label>
-        <input
-          name="amount"
-          type="number"
-          value={formData.amount}
-          onChange={handleChange}
-          placeholder="Amount"
-          required
-        />
-      </div>
-      <div>
-        <label className="date-label">Spent Amount:</label>
-        <input
-          name="spent_amount"
-          type="number"
-          value={formData.spent_amount}
-          onChange={handleChange}
-          placeholder="Spent Amount"
-          required
-        />
-      </div>
-      <div>
-        <label className="date-label">Start Date:</label>
-        <input
-          type="date"
-          name="start_date"
-          value={formData.start_date}
-          onChange={handleChange}
-          required
-        />
-      </div>
+    <>
+      {/* <button
+        onClick={onClose}
+        style={{
+          position: "relative",
+          right: "1rem",
+          top: "1rem",
+          background: "none",
+          border: "none",
+          outline: "none",
+          cursor: "pointer",
+          color: "rgb(19, 1, 63)",
+        }}
+      >
+        <IoIosClose />
+      </button> */}
 
-      <div>
-        <label className="date-label">End Date:</label>
-        <input
-          type="date"
-          name="end_date"
-          value={formData.end_date}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <button type="submit">Update</button>
-    </form>
+      <form className="budget-form" onSubmit={handleSubmit}>
+        <h3>Edit Budget</h3>
+        <div>
+          <label className="date-label">Name:</label>
+          <input
+            name="name"
+            type="text"
+            placeholder="Name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label className="date-label">Category:</label>
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            required
+          >
+            <option value="" disabled hidden>
+              Category
+            </option>
+            <option value="Food">Food</option>
+            <option value="Housing">Housing</option>
+            <option value="Transport">Transport</option>
+            <option value="Leisure">Leisure</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div>
+          <label className="date-label">Amount:</label>
+          <input
+            name="amount"
+            type="number"
+            value={formData.amount}
+            onChange={handleChange}
+            placeholder="Amount"
+            required
+          />
+        </div>
+        <div>
+          <label className="date-label">Spent Amount:</label>
+          <input
+            name="spent_amount"
+            type="number"
+            value={formData.spent_amount}
+            onChange={handleChange}
+            placeholder="Spent Amount"
+            required
+          />
+        </div>
+        <div>
+          <label className="date-label">Start Date:</label>
+          <input
+            type="date"
+            name="start_date"
+            value={formData.start_date}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div>
+          <label className="date-label">End Date:</label>
+          <input
+            type="date"
+            name="end_date"
+            value={formData.end_date}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit">Update</button>
+      </form>
+    </>
   );
 }
