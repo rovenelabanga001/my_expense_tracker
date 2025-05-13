@@ -1,6 +1,6 @@
 "use client";
 import "./Noresults.css";
-export default function () {
+export default function NoResults() {
   const magnifySvg = "assets/magnify.svg";
   return (
     <div className="no-results">

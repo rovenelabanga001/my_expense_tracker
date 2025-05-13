@@ -99,7 +99,7 @@ export default function Login() {
           </button>
         </form>
         <p className="link-section">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <span>
             <Link href="/signup" className="text-blue-500 hover:underline">
               Sign Up
