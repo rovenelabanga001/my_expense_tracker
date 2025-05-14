@@ -26,7 +26,7 @@ app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
 app.json.compact = True
 jwt = JWTManager(app)
 
-CORS(app, origins=["https://client-hiub18t58-rovenel-abangas-projects.vercel.app"])
+CORS(app, origins=["https://client-seven-livid.vercel.app/"])
 
 migrate = Migrate(app, db)
 db.init_app(app)
